@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tiệm giày cũ Bình Dương - Quản Lý Nội Bộ</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5', // Indigo-600
+                        success: '#10B981', // Emerald-500
+                        warning: '#F59E0B', // Amber-500
+                        danger: '#EF4444', // Red-500
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons for Premium UI -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col overflow-hidden text-slate-800">
+
+    <!-- HEADER (Đã gỡ bỏ toàn bộ nút cấu hình thừa) -->
+    <header class="bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between shrink-0 shadow-sm z-10">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-indigo-200">
+                <i data-lucide="package-open" class="w-6 h-6"></i>
+            </div>
+            <div>
+                <h1 class="text-base font-bold text-slate-900 tracking-tight">Tiệm giày cũ Bình Dương</h1>
+                <p class="text-xs text-slate-500 font-medium">Hệ Thống Trực Tuyến Nội Bộ</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center space-x-1.5">
+            <!-- Nút Tải lại/Đồng bộ trực tiếp dữ liệu từ Baserow -->
+            <button onclick="fetchDataFromBaserow()" class="p-2.5 hover:bg-slate-100 rounded-xl transition duration-200 relative group" title="Làm mới & Đồng bộ dữ liệu">
+                <i data-lucide="refresh-cw" class="w-5 h-5 text-slate-600 group-hover:rotate-180 transition-transform duration-500"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER (Scrollable) -->
+    <main class="flex-1 overflow-y-auto bg-slate-50 pb-24">
+        
+        <!-- TOAST NOTIFICATION CONTAINER -->
+        <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+        <!-- 1. PHẦN KHÁCH MUA GIÀY -->
+        <section id="section-mua-giay" class="p-4 space-y-4 max-w-xl mx-auto hidden">
+            <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="flex items-center space-x-2 text-indigo-600">
+                        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        <h2 class="text-lg font-bold text-slate-900">Tạo Đơn Bán Giày</h2>
+                    </div>
+                </div>
+
+                <form id="form-mua-giay" class="space-y-4" onsubmit="submitMuaGiay(event)">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Số điện thoại *</label>
+                            <input type="tel" id="mua-sdt" required placeholder="SĐT khách hàng" oninput="autoFillName('mua-sdt', 'mua-ten')"
+                                   class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition duration-200">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Tên khách hàng *</label>
+                            <input type="text" id="mua-ten" required placeholder="Họ và tên khách" 
+                                   class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition duration-200">
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Danh sách giày khách mua *</label>
+                            <button type="button" onclick="addProductRow()" class="flex items-center space-x-1 px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-xs font-bold rounded-lg transition">
+                                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                <span>Thêm đôi thứ 2</span>
+                            </button>
+                        </div>
+                        <div id="product-rows-container" class="space-y-3"></div>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-150 space-y-2">
+                        <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider">Hình thức thanh toán</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="flex items-center justify-center space-x-2 p-2.5 bg-white border border-slate-200 rounded-xl cursor-pointer hover:bg-indigo-50/20 transition">
+                                <input type="radio" name="hinhthuc" value="Tiền mặt" checked onchange="toggleBillUpload(false)"
+                                       class="w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-slate-300">
+                                <span class="text-xs font-bold text-slate-700">Tiền mặt</span>
+                            </label>
+                            <label class="flex items-center justify-center space-x-2 p-2.5 bg-white border border-slate-200 rounded-xl cursor-pointer hover:bg-indigo-50/20 transition">
+                                <input type="radio" name="hinhthuc" value="Chuyển khoản" onchange="toggleBillUpload(true)"
+                                       class="w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-slate-300">
+                                <span class="text-xs font-bold text-slate-700">Chuyển khoản</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="bill-upload-wrapper" class="hidden space-y-1">
+                        <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Ảnh chụp Bill Chuyển khoản *</label>
+                        <div class="flex items-center space-x-3">
+                            <label class="flex-1 flex flex-col items-center justify-center p-3 border-2 border-dashed border-slate-200 rounded-2xl hover:bg-slate-50 cursor-pointer transition">
+                                <i data-lucide="camera" class="w-5 h-5 text-indigo-500 mb-1"></i>
+                                <span class="text-[11px] font-medium text-slate-600">Chụp hoặc Chọn Ảnh Bill</span>
+                                <input type="file" id="mua-anh-bill" accept="image/*" capture="environment" onchange="previewImage(this, 'bill-preview')" class="hidden">
+                            </label>
+                            <div id="bill-preview-box" class="w-16 h-16 bg-slate-100 rounded-2xl border border-slate-200 hidden overflow-hidden relative">
+                                <img id="bill-preview" class="w-full h-full object-cover">
+                                <button type="button" onclick="clearPreview('mua-anh-bill', 'bill-preview-box')" class="absolute top-1 right-1 bg-red-500 text-white p-0.5 rounded-full hover:bg-red-600 transition">
+                                    <i data-lucide="x" class="w-3 h-3"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Chụp ảnh giày bán *</label>
+                        <div class="flex items-center space-x-3">
+                            <label class="flex-1 flex flex-col items-center justify-center p-3 border-2 border-dashed border-slate-200 rounded-2xl hover:bg-slate-50 cursor-pointer transition">
+                                <i data-lucide="camera" class="w-5 h-5 text-emerald-500 mb-1"></i>
+                                <span class="text-xs font-medium text-slate-600">Chụp ảnh giày bán</span>
+                                <input type="file" id="mua-anh-giay-chung" required accept="image/*" capture="environment" onchange="previewImage(this, 'giay-chung-preview')" class="hidden">
+                            </label>
+                            <div id="giay-chung-preview-box" class="w-16 h-16 bg-slate-100 rounded-2xl border border-slate-200 hidden overflow-hidden relative">
+                                <img id="giay-chung-preview" class="w-full h-full object-cover">
+                                <button type="button" onclick="clearPreview('mua-anh-giay-chung', 'giay-chung-preview-box')" class="absolute top-1 right-1 bg-red-500 text-white p-0.5 rounded-full hover:bg-red-600 transition">
+                                    <i data-lucide="x" class="w-3 h-3"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-900 text-white p-4 rounded-xl flex items-center justify-between shadow-md">
+                        <div>
+                            <p class="text-[10px] text-indigo-200 uppercase tracking-wider font-semibold">Tổng thanh toán đơn hàng</p>
+                            <p id="label-tong-thanh-toan" class="text-2xl font-black">0đ</p>
+                        </div>
+                        <div class="text-right">
+                            <i data-lucide="shopping-cart" class="w-8 h-8 opacity-40"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btn-submit-ban" class="w-full bg-indigo-600 text-white py-3.5 rounded-xl font-bold hover:bg-indigo-700 transition duration-300 shadow-md shadow-indigo-200 flex items-center justify-center space-x-2">
+                        <i data-lucide="send" class="w-5 h-5"></i>
+                        <span>Tạo Đơn Hàng</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 2. PHẦN KHÁCH GIẶT GIÀY -->
+        <section id="section-giat-giay" class="p-4 space-y-4 max-w-xl mx-auto hidden">
+            <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm space-y-4">
+                <div class="flex items-center space-x-2 text-cyan-600 border-b border-slate-100 pb-3">
+                    <i data-lucide="waves" class="w-5 h-5"></i>
+                    <h2 class="text-lg font-bold text-slate-900">Dịch Vụ Nhận Giặt Giày</h2>
+                </div>
+
+                <form id="form-giat-giay" class="space-y-4" onsubmit="submitGiatGiay(event)">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Số điện thoại *</label>
+                            <input type="tel" id="giat-sdt" required placeholder="Nhập SĐT khách" oninput="autoFillName('giat-sdt', 'giat-ten')"
+                                   class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-white transition duration-200">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Tên khách hàng *</label>
+                            <input type="text" id="giat-ten" required placeholder="Họ tên khách gửi" 
+                                   class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-white transition duration-200">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">Trạng thái thanh toán</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <label class="flex flex-col items-center justify-center p-2.5 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-cyan-50/20 transition text-center">
+                                <input type="radio" name="trangthai_thanhtoan" value="Chưa thanh toán" checked onchange="toggleDepositInput(false)"
+                                       class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 border-slate-300 mb-1">
+                                <span class="text-[10px] font-bold text-slate-700">Chưa thanh toán</span>
+                            </label>
+                            <label class="flex flex-col items-center justify-center p-2.5 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-cyan-50/20 transition text-center">
+                                <input type="radio" name="trangthai_thanhtoan" value="Cọc" onchange="toggleDepositInput(true)"
+                                       class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 border-slate-300 mb-1">
+                                <span class="text-[10px] font-bold text-slate-700">Cọc trước</span>
+                            </label>
+                            <label class="flex flex-col items-center justify-center p-2.5 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-cyan-50/20 transition text-center">
+                                <input type="radio" name="trangthai_thanhtoan" value="Đã thanh toán" onchange="toggleDepositInput(false)"
+                                       class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 border-slate-300 mb-1">
+                                <span class="text-[10px] font-bold text-slate-700">Đã thanh toán</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="deposit-amount-wrapper" class="hidden space-y-1 animate-in fade-in duration-200">
+                        <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Số tiền cọc (VND) *</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                <i data-lucide="wallet" class="w-4 h-4"></i>
+                            </span>
+                            <input type="number" id="giat-tiencoc" placeholder="Ví dụ: 50000"
+                                   class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-white transition duration-200">
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Chụp ảnh giày giặt *</label>
+                        <div class="flex items-center space-x-3">
+                            <label class="flex-1 flex flex-col items-center justify-center p-3 border-2 border-dashed border-slate-200 rounded-2xl hover:bg-slate-50 cursor-pointer transition">
+                                <i data-lucide="camera" class="w-5 h-5 text-cyan-500 mb-1"></i>
+                                <span class="text-xs font-medium text-slate-600">Chụp ảnh giày giặt</span>
+                                <input type="file" id="giat-anh-giay" required accept="image/*" capture="environment" onchange="previewImage(this, 'giat-giay-preview')" class="hidden">
+                            </label>
+                            <div id="giat-giay-preview-box" class="w-16 h-16 bg-slate-100 rounded-2xl border border-slate-200 hidden overflow-hidden relative">
+                                <img id="giat-giay-preview" class="w-full h-full object-cover">
+                                <button type="button" onclick="clearPreview('giat-anh-giay', 'giat-giay-preview-box')" class="absolute top-1 right-1 bg-red-500 text-white p-0.5 rounded-full hover:bg-red-600 transition">
+                                    <i data-lucide="x" class="w-3 h-3"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btn-submit-giat" class="w-full bg-cyan-600 text-white py-3 rounded-xl font-bold hover:bg-cyan-700 transition duration-300 shadow-md shadow-cyan-100 flex items-center justify-center space-x-2">
+                        <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                        <span>Tạo Đơn Giặt</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 3. PHẦN TRA CỨU -->
+        <section id="section-tra-cuu" class="p-4 space-y-4 max-w-xl mx-auto">
+            <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm space-y-4">
+                <div class="flex items-center space-x-2 text-violet-600 border-b border-slate-100 pb-3">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                    <h2 class="text-lg font-bold text-slate-900">Tìm Kiếm Khách Hàng / Giày</h2>
+                </div>
+
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                        <i data-lucide="search" class="w-4 h-4"></i>
+                    </span>
+                    <input type="text" id="input-search" oninput="toggleClearSearchBtn(); executeSearch()" placeholder="Nhập SĐT, Tên khách, hoặc Tên giày..." 
+                           class="w-full pl-9 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:bg-white transition duration-200">
+                    <button id="btn-clear-search" onclick="clearSearch()" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 hidden">
+                        <i data-lucide="x-circle" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div id="search-results" class="space-y-3">
+                    <div class="text-center py-8 text-slate-400 text-sm">
+                        <i data-lucide="search-code" class="w-8 h-8 mx-auto mb-2 text-slate-300"></i>
+                        Gõ SĐT hoặc từ khóa để tra cứu hồ sơ giao dịch (Mua & Giặt)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. LỊCH SỬ GIAO DỊCH -->
+        <section id="section-lich-su" class="p-4 space-y-4 max-w-xl mx-auto hidden">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-bold text-slate-950 flex items-center space-x-2">
+                    <i data-lucide="history" class="w-5 h-5 text-indigo-600"></i>
+                    <span>Lịch Sử Giao Dịch</span>
+                </h2>
+                <div class="flex space-x-1 bg-slate-200 p-1 rounded-xl text-xs font-semibold">
+                    <button onclick="filterHistory('tat-ca')" id="btn-hist-all" class="px-3 py-1.5 rounded-lg bg-white shadow-sm text-indigo-600">Tất cả</button>
+                    <button onclick="filterHistory('mua-giay')" id="btn-hist-mua" class="px-3 py-1.5 rounded-lg text-slate-600">Mua</button>
+                    <button onclick="filterHistory('giat-giay')" id="btn-hist-giat" class="px-3 py-1.5 rounded-lg text-slate-600">Giặt</button>
+                </div>
+            </div>
+            <div id="history-list" class="space-y-3"></div>
+        </section>
+
+        <!-- 5. DOANH THU -->
+        <section id="section-doanh-thu" class="p-4 space-y-4 max-w-xl mx-auto hidden">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-gradient-to-br from-indigo-600 to-indigo-800 rounded-2xl p-4 text-white shadow-lg shadow-indigo-100">
+                    <span class="text-xs text-indigo-100 font-medium">Tiền Bán Giày Hôm Ni</span>
+                    <h3 id="doanhthu-homnay" class="text-xl font-bold mt-1">0đ</h3>
+                    <p id="donhang-homnay" class="text-[10px] text-indigo-200 mt-2">0 đôi giày bán được</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl p-4 text-white shadow-lg shadow-purple-100">
+                    <span class="text-xs text-purple-100 font-medium">Tiền Bán Giày Tháng Này</span>
+                    <h3 id="doanhthu-thangnay" class="text-xl font-bold mt-1">0đ</h3>
+                    <p id="donhang-thangnay" class="text-[10px] text-purple-200 mt-2">0 đôi giày bán được</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="space-y-0.5">
+                        <h3 class="font-bold text-slate-900 text-sm flex items-center space-x-1.5">
+                            <i data-lucide="shopping-bag" class="w-4 h-4 text-indigo-500"></i>
+                            <span>Báo Cáo Bán Giày Trực Quan</span>
+                        </h3>
+                        <p class="text-[10px] text-slate-400 italic">Doanh thu chỉ tính toán mảng bán giày</p>
+                    </div>
+                    <div class="flex space-x-2 text-xs">
+                        <button onclick="switchDoanhThuTab('ngay')" id="tab-dt-ngay" class="font-bold text-indigo-600 underline">Theo Ngày</button>
+                        <span class="text-slate-300">|</span>
+                        <button onclick="switchDoanhThuTab('thang')" id="tab-dt-thang" class="font-bold text-slate-500 hover:text-indigo-600">Theo Tháng</button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="text-slate-400 text-xs font-semibold uppercase tracking-wider border-b border-slate-100">
+                                <th class="pb-2" id="header-thoigian">Thời gian</th>
+                                <th class="pb-2 text-center">Số lượng (Đôi)</th>
+                                <th class="pb-2 text-right">Doanh thu bán giày</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-doanhthu-body" class="divide-y divide-slate-100 font-medium text-slate-700"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- NAVIGATION BAR -->
+    <nav class="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 px-2 py-1.5 flex justify-around items-center shrink-0 shadow-lg z-20">
+        <button onclick="switchTab('mua-giay')" id="nav-mua-giay" class="flex flex-col items-center space-y-0.5 py-1 px-3 rounded-xl transition duration-200 text-slate-400 hover:text-indigo-600">
+            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+            <span class="text-[10px] font-bold">Bán giày</span>
+        </button>
+        <button onclick="switchTab('giat-giay')" id="nav-giat-giay" class="flex flex-col items-center space-y-0.5 py-1 px-3 rounded-xl transition duration-200 text-slate-400 hover:text-indigo-600">
+            <i data-lucide="waves" class="w-5 h-5"></i>
+            <span class="text-[10px] font-bold">Giặt giày</span>
+        </button>
+        <button onclick="switchTab('tra-cuu')" id="nav-tra-cuu" class="flex flex-col items-center space-y-0.5 py-1 px-3 rounded-xl transition duration-200 text-indigo-600">
+            <i data-lucide="search" class="w-5 h-5"></i>
+            <span class="text-[10px] font-bold">Tra cứu</span>
+        </button>
+        <button onclick="switchTab('lich-su')" id="nav-lich-su" class="flex flex-col items-center space-y-0.5 py-1 px-3 rounded-xl transition duration-200 text-slate-400 hover:text-indigo-600">
+            <i data-lucide="history" class="w-5 h-5"></i>
+            <span class="text-[10px] font-bold">Lịch sử</span>
+        </button>
+        <button onclick="switchTab('doanh-thu')" id="nav-doanh-thu" class="flex flex-col items-center space-y-0.5 py-1 px-3 rounded-xl transition duration-200 text-slate-400 hover:text-indigo-600">
+            <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+            <span class="text-[10px] font-bold">Doanh thu</span>
+        </button>
+    </nav>
+
+    <!-- FULLSCREEN IMAGE VIEWER MODAL -->
+    <div id="image-viewer-modal" class="fixed inset-0 bg-black/90 z-50 items-center justify-center p-4 hidden flex" onclick="toggleImageViewer(false)">
+        <img id="fullscreen-image" src="" alt="Zoomed shoe" class="max-w-full max-h-full rounded-lg shadow-2xl object-contain">
+        <button class="absolute top-4 right-4 bg-white/20 text-white p-2 rounded-full hover:bg-white/40 transition">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+    </div>
+
+    <!-- CORE LOGIC / JAVASCRIPT -->
+    <script>
+        const GLOBAL_CONFIG = {
+            baserowToken: 'NiWMS76P9sn2yP76BS53dgiikbc76utz',
+            baserowDb: '459127',
+            tableMua: '1012082',
+            tableGiat: '1012088',
+            telegramToken: '8965725827:AAHfHSqjLAmspcMVRayZI8buJVN6MNJMEqs',
+            telegramChat: '8511070091'
+        };
+
+        let dataStore = {
+            muaGiay: JSON.parse(localStorage.getItem('sm_mua_giay_v3')) || [],
+            giatGiay: JSON.parse(localStorage.getItem('sm_giat_giay_v3')) || []
+        };
+
+        let productRowCount = 0;
+
+        function saveToLocalStorage() {
+            localStorage.setItem('sm_mua_giay_v3', JSON.stringify(dataStore.muaGiay));
+            localStorage.setItem('sm_giat_giay_v3', JSON.stringify(dataStore.giatGiay));
+        }
+
+        window.onload = function() {
+            lucide.createIcons();
+            renderHistoryList();
+            calculateDoanhThu();
+            addProductRow();
+            switchTab('tra-cuu');
+            fetchDataFromBaserow();
+        };
+
+        // BỘ NÉN ẢNH TỰ ĐỘNG BẰNG CANVAS (Giảm dung lượng ảnh 10MB xuống 150KB trong 0.1 giây)
+        function compressImage(file, maxWidth = 1000, maxHeight = 1000, quality = 0.7) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height = Math.round((height * maxWidth) / width);
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width = Math.round((width * maxHeight) / height);
+                                height = maxHeight;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        canvas.toBlob((blob) => {
+                            const compressedFile = new File([blob], file.name, {
+                                type: "image/jpeg",
+                                lastModified: Date.now()
+                            });
+                            resolve(compressedFile);
+                        }, "image/jpeg", quality);
+                    };
+                };
+            });
+        }
+
+        async function fetchDataFromBaserow() {
+            const token = GLOBAL_CONFIG.baserowToken;
+            const tableMuaId = GLOBAL_CONFIG.tableMua;
+            const tableGiatId = GLOBAL_CONFIG.tableGiat;
+            
+            showToast("Đang đồng bộ dữ liệu...", "warning");
+            
+            try {
+                const resMua = await fetch(`https://api.baserow.io/api/database/rows/table/${tableMuaId}/?user_field_names=true&size=150`, {
+                    headers: { "Authorization": `Token ${token}` }
+                });
+                if (!resMua.ok) throw new Error("Không lấy được lịch sử bán giày từ Baserow");
+                const dataMua = await resMua.json();
+
+                const resGiat = await fetch(`https://api.baserow.io/api/database/rows/table/${tableGiatId}/?user_field_names=true&size=150`, {
+                    headers: { "Authorization": `Token ${token}` }
+                });
+                if (!resGiat.ok) throw new Error("Không lấy được lịch sử giặt giày từ Baserow");
+                const dataGiat = await resGiat.json();
+
+                dataStore.muaGiay = dataMua.results.map(row => {
+                    return {
+                        id: row.id,
+                        thoiGian: row["Thời gian"] || new Date().toISOString(),
+                        ten: row["Tên khách"] || "",
+                        sdt: row["Số điện thoại"] || "",
+                        tenGiay: row["Tên giày"] || "",
+                        gia: Number(row["Giá bán"]) || 0,
+                        hinhThuc: row["Hình thức"]?.value || row["Hình thức"] || "",
+                        urlAnhBill: row["Link ảnh Bill"]?.[0]?.url || "",
+                        urlAnhGiay: row["Link ảnh giày"]?.[0]?.url || "",
+                        tongThanhToan: Number(row["Tổng thanh toán đơn"]) || 0
+                    };
+                });
+
+                dataStore.giatGiay = dataGiat.results.map(row => {
+                    return {
+                        id: row.id,
+                        thoiGian: row["Thời gian"] || new Date().toISOString(),
+                        tenKhachHang: row["Tên khách hàng"] || "",
+                        sdt: row["Số điện thoại"] || "",
+                        dichVu: row["Dịch vụ"] || "Giặt giày",
+                        chiPhi: Number(row["Chi phí"]) || 0,
+                        trangThaiThanhToan: row["Trạng thái thanh toán"]?.value || row["Trạng thái thanh toán"] || "Chưa thanh toán",
+                        trangThai: row["Trạng thái xử lý"]?.value || row["Trạng thái xử lý"] || "Đang xử lý",
+                        urlAnhGiayGiat: row["Link ảnh giày giặt"]?.[0]?.url || ""
+                    };
+                });
+
+                saveToLocalStorage();
+                renderHistoryList();
+                calculateDoanhThu();
+                showToast("Đồng bộ dữ liệu hoàn tất!", "success");
+            } catch (error) {
+                console.error(error);
+                showToast("Đồng bộ thất bại. Vui lòng kiểm tra lại mạng di động.", "danger");
+            }
+        }
+
+        async function uploadToBaserow(file) {
+            if (!file) return null;
+            const token = GLOBAL_CONFIG.baserowToken;
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const response = await fetch("https://api.baserow.io/api/user-files/upload-file/", {
+                    method: "POST",
+                    headers: { "Authorization": `Token ${token}` },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(`Lỗi tải ảnh (Mã ${response.status}): ${errData.detail || errData.error || 'Dung lượng bộ lưu trữ tệp tin đã đầy'}`);
+                }
+
+                const result = await response.json();
+                return { name: result.name }; 
+            } catch (error) {
+                console.error("Lỗi upload Baserow: ", error);
+                throw error;
+            }
+        }
+
+        async function parseBaserowError(response) {
+            try {
+                const errorData = await response.json();
+                let message = "";
+                if (errorData.error) message += `[${errorData.error}] `;
+                if (errorData.detail) {
+                    if (typeof errorData.detail === 'object') {
+                        const details = [];
+                        for (const [field, errs] of Object.entries(errorData.detail)) {
+                            details.push(`Cột "${field}": ${Array.isArray(errs) ? errs.join(', ') : JSON.stringify(errs)}`);
+                        }
+                        message += details.join(' | ');
+                    } else {
+                        message += errorData.detail;
+                    }
+                } else {
+                    message += "Sai cấu hình tên hoặc kiểu dữ liệu cột.";
+                }
+                return new Error(message);
+            } catch (e) {
+                return new Error(`Lỗi kết nối Baserow hoặc đầy dung lượng (Mã: ${response.status})`);
+            }
+        }
+
+        async function sendTelegramNotification(text) {
+            const token = GLOBAL_CONFIG.telegramToken;
+            const chat = GLOBAL_CONFIG.telegramChat;
+            if (!token || !chat) return;
+            try {
+                await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: chat, text: text, parse_mode: 'HTML' })
+                });
+            } catch (e) { console.error("Lỗi Telegram: ", e); }
+        }
+
+        // HÀM CHUYỂN TAB (Đã được định nghĩa lại đầy đủ)
+        function switchTab(tabName) {
+            const sections = ['mua-giay', 'giat-giay', 'tra-cuu', 'lich-su', 'doanh-thu'];
+            sections.forEach(s => {
+                const secEl = document.getElementById(`section-${s}`);
+                const navEl = document.getElementById(`nav-${s}`);
+                if (secEl) secEl.classList.add('hidden');
+                if (navEl) {
+                    navEl.classList.remove('text-indigo-600');
+                    navEl.classList.add('text-slate-400');
+                }
+            });
+
+            const targetSec = document.getElementById(`section-${tabName}`);
+            const targetNav = document.getElementById(`nav-${tabName}`);
+            if (targetSec) targetSec.classList.remove('hidden');
+            if (targetNav) {
+                targetNav.classList.add('text-indigo-600');
+                targetNav.classList.remove('text-slate-400');
+            }
+
+            lucide.createIcons();
+
+            if (tabName === 'lich-su') renderHistoryList();
+            if (tabName === 'doanh-thu') calculateDoanhThu();
+        }
+
+        function addProductRow() {
+            productRowCount++;
+            const container = document.getElementById('product-rows-container');
+            const rowId = `prod-row-${productRowCount}`;
+            
+            const rowHtml = `
+                <div id="${rowId}" class="bg-slate-50 border border-slate-200 p-3.5 rounded-xl space-y-2 relative animate-in slide-in-from-top-1">
+                    <button type="button" onclick="removeProductRow('${rowId}')" class="absolute top-2 right-2 text-slate-400 hover:text-red-500 transition">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Tên & size giày *</label>
+                            <input type="text" placeholder="Ví dụ: Nike AF1 size 42" required class="prod-name w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Giá bán (VND) *</label>
+                            <input type="number" placeholder="Ví dụ: 650 (sẽ tự thêm 000)" oninput="calculateTotalPayment()" onblur="handlePriceBlur(this)" required class="prod-price w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white">
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', rowHtml);
+            lucide.createIcons();
+            calculateTotalPayment();
+        }
+
+        function removeProductRow(rowId) {
+            const container = document.getElementById('product-rows-container');
+            if (container.children.length <= 1) {
+                showToast("Đơn hàng tối thiểu phải có ít nhất 1 sản phẩm!", "warning");
+                return;
+            }
+            document.getElementById(rowId).remove();
+            calculateTotalPayment();
+        }
+
+        function calculateTotalPayment() {
+            const priceInputs = document.querySelectorAll('.prod-price');
+            let total = 0;
+            priceInputs.forEach(input => {
+                let val = parseInt(input.value) || 0;
+                if (val > 0 && val < 10000) val = val * 1000;
+                total += val;
+            });
+            const label = document.getElementById('label-tong-thanh-toan');
+            if (label) label.innerText = formatMoney(total);
+        }
+
+        function handlePriceBlur(input) {
+            let val = parseInt(input.value) || 0;
+            if (val > 0 && val < 10000) {
+                input.value = val * 1000;
+                calculateTotalPayment();
+            }
+        }
+
+        async function submitMuaGiay(e) {
+            e.preventDefault();
+            const token = GLOBAL_CONFIG.baserowToken;
+            const tableMuaId = GLOBAL_CONFIG.tableMua;
+            const btnSubmit = document.getElementById('btn-submit-ban');
+            const ten = document.getElementById('mua-ten').value.trim();
+            const sdt = document.getElementById('mua-sdt').value.trim();
+            const hinhThuc = document.querySelector('input[name="hinhthuc"]:checked').value;
+            const fileBill = document.getElementById('mua-anh-bill').files[0];
+            const fileGiayChung = document.getElementById('mua-anh-giay-chung').files[0];
+
+            if (!fileGiayChung) { showToast("Bạn chưa chụp ảnh giày bán!", "danger"); return; }
+
+            const nameInputs = document.querySelectorAll('.prod-name');
+            const priceInputs = document.querySelectorAll('.prod-price');
+            let items = []; let totalOrderValue = 0;
+
+            for (let i = 0; i < nameInputs.length; i++) {
+                const tenGiay = nameInputs[i].value.trim();
+                let gia = parseInt(priceInputs[i].value.trim()) || 0;
+                if (gia > 0 && gia < 10000) gia = gia * 1000;
+                totalOrderValue += gia;
+                items.push({ tenGiay, gia });
+            }
+
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = "Đang nén & tải ảnh...";
+
+            try {
+                const compressedGiay = await compressImage(fileGiayChung);
+                const imgGiayObj = await uploadToBaserow(compressedGiay);
+                let imgBillObj = null;
+                if (fileBill) {
+                    const compressedBill = await compressImage(fileBill);
+                    imgBillObj = await uploadToBaserow(compressedBill);
+                }
+
+                showToast("Đang gửi đơn hàng lên Baserow...", "warning");
+
+                for (let item of items) {
+                    const payload = {
+                        "Thời gian": new Date().toISOString(),
+                        "Tên khách": ten,
+                        "Số điện thoại": sdt,
+                        "Tên giày": item.tenGiay,
+                        "Giá bán": Number(item.gia),
+                        "Hình thức": hinhThuc,
+                        "Link ảnh Bill": imgBillObj ? [imgBillObj] : [],
+                        "Link ảnh giày": imgGiayObj ? [imgGiayObj] : [],
+                        "Tổng thanh toán đơn": Number(totalOrderValue)
+                    };
+
+                    const response = await fetch(`https://api.baserow.io/api/database/rows/table/${tableMuaId}/?user_field_names=true`, {
+                        method: "POST",
+                        headers: { "Authorization": `Token ${token}`, "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const detailedError = await parseBaserowError(response);
+                        throw detailedError;
+                    }
+                }
+
+                let text = `<b>👟 ĐƠN BÁN GIÀY MỚI!</b>\n👤 Khách hàng: <b>${ten}</b> (${sdt})\n💳 Thanh toán: <b>${hinhThuc}</b>\n💵 Tổng đơn: <b>${formatMoney(totalOrderValue)}</b>\n\n<b>Sản phẩm:</b>\n`;
+                items.forEach((item, index) => { text += `${index + 1}. ${item.tenGiay} - <b>${formatMoney(item.gia)}</b>\n`; });
+                await sendTelegramNotification(text);
+
+                showToast("Tạo đơn hàng thành công!", "success");
+                await fetchDataFromBaserow();
+
+                document.getElementById('form-mua-giay').reset();
+                document.getElementById('product-rows-container').innerHTML = "";
+                addProductRow();
+                clearPreview('mua-anh-giay-chung', 'giay-chung-preview-box');
+                clearPreview('mua-anh-bill', 'bill-preview-box');
+                toggleBillUpload(false);
+                switchTab('lich-su');
+            } catch (err) {
+                console.error(err);
+                showToast("Lỗi: " + err.message, "danger");
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = `<i data-lucide="send" class="w-5 h-5"></i><span>Tạo Đơn Hàng</span>`;
+                lucide.createIcons();
+            }
+        }
+
+        async function submitGiatGiay(e) {
+            e.preventDefault();
+            const token = GLOBAL_CONFIG.baserowToken;
+            const tableGiatId = GLOBAL_CONFIG.tableGiat;
+            const btnSubmit = document.getElementById('btn-submit-giat');
+            const ten = document.getElementById('giat-ten').value.trim();
+            const sdt = document.getElementById('giat-sdt').value.trim();
+            const trangThaiThanhToanRadio = document.querySelector('input[name="trangthai_thanhtoan"]:checked').value;
+            let soTienCoc = 0;
+            if (trangThaiThanhToanRadio === "Cọc") {
+                soTienCoc = Number(document.getElementById('giat-tiencoc').value.trim()) || 0;
+            }
+
+            const fileGiayGiat = document.getElementById('giat-anh-giay').files[0];
+            if (!fileGiayGiat) { showToast("Vui lòng chụp ảnh giày giặt!", "danger"); return; }
+
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = "Đang nén & tải ảnh...";
+
+            try {
+                const compressedGiay = await compressImage(fileGiayGiat);
+                const imgGiayObj = await uploadToBaserow(compressedGiay);
+
+                const payload = {
+                    "Thời gian": new Date().toISOString(),
+                    "Tên khách hàng": ten,
+                    "Số điện thoại": sdt,
+                    "Dịch vụ": trangThaiThanhToanRadio === "Cọc" ? `Giặt giày (Cọc trước ${formatMoney(soTienCoc)})` : "Giặt giày",
+                    "Chi phí": 0,
+                    "Trạng thái thanh toán": trangThaiThanhToanRadio,
+                    "Trạng thái xử lý": "Đang xử lý",
+                    "Link ảnh giày giặt": imgGiayObj ? [imgGiayObj] : []
+                };
+
+                const response = await fetch(`https://api.baserow.io/api/database/rows/table/${tableGiatId}/?user_field_names=true`, {
+                    method: "POST",
+                    headers: { "Authorization": `Token ${token}`, "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const detailedError = await parseBaserowError(response);
+                    throw detailedError;
+                }
+
+                let text = `<b>🧼 ĐƠN GIẶT GIÀY MỚI!</b>\n👤 Khách: <b>${ten}</b> (${sdt})\n💵 Thanh toán: <b>${trangThaiThanhToanRadio}</b>\n`;
+                if (trangThaiThanhToanRadio === "Cọc") text += `💰 Tiền cọc: <b>${formatMoney(soTienCoc)}</b>\n`;
+                await sendTelegramNotification(text);
+
+                showToast("Tạo đơn giặt thành công!", "success");
+                await fetchDataFromBaserow();
+                document.getElementById('form-giat-giay').reset();
+                toggleDepositInput(false);
+                clearPreview('giat-anh-giay', 'giat-giay-preview-box');
+                switchTab('lich-su');
+            } catch (err) {
+                console.error(err);
+                showToast("Lỗi đơn giặt: " + err.message, "danger");
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5"></i><span>Tạo Đơn Giặt</span>`;
+                lucide.createIcons();
+            }
+        }
+
+        function toggleDepositInput(show) {
+            const wrapper = document.getElementById('deposit-amount-wrapper');
+            const input = document.getElementById('giat-tiencoc');
+            if (show) { wrapper.classList.remove('hidden'); input.required = true; } 
+            else { wrapper.classList.add('hidden'); input.required = false; input.value = ""; }
+            lucide.createIcons();
+        }
+
+        function toggleClearSearchBtn() {
+            const searchInput = document.getElementById('input-search');
+            const clearBtn = document.getElementById('btn-clear-search');
+            if (searchInput.value.trim().length > 0) clearBtn.classList.remove('hidden');
+            else clearBtn.classList.add('hidden');
+        }
+
+        function clearSearch() {
+            document.getElementById('input-search').value = "";
+            toggleClearSearchBtn(); executeSearch();
+            document.getElementById('input-search').focus();
+        }
+
+        // CẬP NHẬT TRẠNG THÁI TỪ Ô TÌM KIẾM HỒ SƠ KHÁCH HÀNG
+        async function updateGiatStatusFromSearch(originalIndex, field, newValue) {
+            const item = dataStore.giatGiay[originalIndex];
+            if (!item || !item.id) return;
+
+            const token = GLOBAL_CONFIG.baserowToken;
+            const tableGiatId = GLOBAL_CONFIG.tableGiat;
+
+            let baserowField = "";
+            if (field === 'trangThai') baserowField = "Trạng thái xử lý";
+            else if (field === 'trangThaiThanhToan') baserowField = "Trạng thái thanh toán";
+
+            if (!baserowField) return;
+
+            showToast("Đang cập nhật...", "warning");
+
+            try {
+                const response = await fetch(`https://api.baserow.io/api/database/rows/table/${tableGiatId}/${item.id}/?user_field_names=true`, {
+                    method: "PATCH",
+                    headers: {
+                        "Authorization": `Token ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ [baserowField]: newValue })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Không thể cập nhật dữ liệu Baserow!");
+                }
+
+                showToast("Đã cập nhật thay đổi thành công!", "success");
+                await fetchDataFromBaserow();
+                executeSearch(); 
+            } catch (error) {
+                console.error(error);
+                showToast("Cập nhật thất bại: " + error.message, "danger");
+            }
+        }
+
+        // HÀM TRA CỨU HỒ SƠ KHÁCH HÀNG (Đmax TÍCH HỢP HIỂN THỊ ẢNH GIÀY GIẶT CHO NHÂN VIÊN ĐỐI CHIẾU)
+        function executeSearch() {
+            const query = document.getElementById('input-search').value.trim().toLowerCase();
+            const resultsBox = document.getElementById('search-results');
+            resultsBox.innerHTML = "";
+
+            if (!query) {
+                resultsBox.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm"><i data-lucide="search-code" class="w-8 h-8 mx-auto mb-2 text-slate-300"></i>Gõ SĐT hoặc từ khóa để tra cứu hồ sơ</div>`;
+                lucide.createIcons(); return;
+            }
+
+            let matchedSdts = new Set();
+            dataStore.muaGiay.forEach(m => { if (m.sdt.includes(query) || m.ten.toLowerCase().includes(query) || m.tenGiay.toLowerCase().includes(query)) matchedSdts.add(m.sdt); });
+            dataStore.giatGiay.forEach(g => { if (g.sdt.includes(query) || g.tenKhachHang.toLowerCase().includes(query)) matchedSdts.add(g.sdt); });
+
+            if (matchedSdts.size === 0) { resultsBox.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">Không tìm thấy kết quả phù hợp</div>`; return; }
+
+            matchedSdts.forEach(sdt => {
+                let clientMua = dataStore.muaGiay.filter(m => m.sdt === sdt).map((m, idx) => ({ type: 'Mua', originalIndex: idx, ...m, dateObj: new Date(m.thoiGian) }));
+                let clientGiat = dataStore.giatGiay.filter(g => g.sdt === sdt).map((g, idx) => ({ type: 'Giặt', originalIndex: idx, ...g, dateObj: new Date(g.thoiGian) }));
+
+                let clientName = clientMua.length > 0 ? clientMua[0].ten : (clientGiat.length > 0 ? clientGiat[0].tenKhachHang : "Khách Hàng");
+                let allTransactions = [...clientMua, ...clientGiat].sort((a, b) => b.dateObj - a.dateObj);
+
+                const customerCard = document.createElement('div');
+                customerCard.className = "bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4";
+                customerCard.innerHTML = `
+                    <div class="flex justify-between items-start border-b border-slate-100 pb-3 flex-wrap gap-2">
+                        <div class="space-y-1">
+                            <span class="text-[10px] bg-indigo-50 text-indigo-700 font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">Hồ sơ khách hàng</span>
+                            <h3 class="text-sm font-black text-slate-900">${clientName}</h3>
+                            <p class="text-xs font-bold text-slate-700 flex items-center space-x-1"><i data-lucide="phone" class="w-3.5 h-3.5 text-slate-500"></i><span>SĐT: ${sdt}</span></p>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="space-y-3 relative before:absolute before:left-3 before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
+                            ${allTransactions.map(t => {
+                                if (t.type === 'Mua') {
+                                    return `
+                                        <div class="relative pl-7 space-y-1 text-xs">
+                                            <span class="absolute left-1.5 top-1.5 w-3 h-3 bg-indigo-500 border-2 border-white rounded-full"></span>
+                                            <div class="flex justify-between items-center"><span class="px-2 py-0.5 bg-indigo-100 text-indigo-700 text-[9px] font-extrabold rounded-md uppercase">Mua giày</span><span class="text-[10px] text-slate-400 font-medium">${formatDate(t.thoiGian)}</span></div>
+                                            <div class="bg-slate-50 border border-slate-100 p-2.5 rounded-xl space-y-2 mt-1">
+                                                <div class="flex justify-between items-start gap-2">
+                                                    <div><p class="font-extrabold text-slate-800">${t.tenGiay}</p><p class="text-[10px] text-slate-400">Hình thức: <span class="font-semibold text-slate-700">${t.hinhThuc}</span></p></div>
+                                                    <div class="text-right"><p class="font-black text-indigo-600">${formatMoney(t.gia)}</p></div>
+                                                </div>
+                                                ${t.urlAnhGiay ? `<div class="flex items-center space-x-2 mt-1"><button onclick="openImageZoom('${t.urlAnhGiay}')" class="px-2 py-1 bg-white border border-slate-200 text-[10px] font-bold rounded-lg text-slate-600 flex items-center space-x-1"><i data-lucide="image" class="w-3 h-3"></i><span>Ảnh giày</span></button></div>` : ''}
+                                            </div>
+                                        </div>`;
+                                } else {
+                                    let payBadgeClass = t.trangThaiThanhToan.startsWith('Đã thanh toán') ? "bg-emerald-100 text-emerald-700" : (t.trangThaiThanhToan.startsWith('Cọc') ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-700");
+                                    return `
+                                        <div class="relative pl-7 space-y-1 text-xs">
+                                            <span class="absolute left-1.5 top-1.5 w-3 h-3 bg-cyan-500 border-2 border-white rounded-full"></span>
+                                            <div class="flex justify-between items-center"><div class="flex items-center space-x-1.5"><span class="px-2 py-0.5 bg-cyan-100 text-cyan-700 text-[9px] font-extrabold rounded-md uppercase">Giặt giày</span><span class="px-1.5 py-0.5 text-[9px] font-bold rounded ${payBadgeClass}">${t.trangThaiThanhToan}</span></div><span class="text-[10px] text-slate-400 font-medium">${formatDate(t.thoiGian)}</span></div>
+                                            <div class="bg-slate-50 border border-slate-100 p-2.5 rounded-xl space-y-2 mt-1">
+                                                <div><p class="font-extrabold text-slate-800">${t.dichVu}</p><p class="text-xs font-bold text-slate-700 mt-1">Phí giặt: <span class="text-cyan-600 font-black">${formatMoney(t.chiPhi)}</span></p><p class="text-[10px] text-slate-400">Xử lý: <span class="font-extrabold ${t.trangThai === 'Đã hoàn tất' ? 'text-emerald-600' : 'text-amber-500'}">${t.trangThai === 'Đã hoàn tất' ? 'Đã xong' : 'Đang giặt'}</span></p></div>
+                                                
+                                                <!-- TÍCH HỢP HIỂN THỊ ẢNH GIÀY GIẶT CHO NHÂN VIÊN ĐỐI CHIẾU KHI TRA CỨU -->
+                                                ${t.urlAnhGiayGiat ? `
+                                                    <div class="flex items-center space-x-2 mt-1">
+                                                        <button onclick="openImageZoom('${t.urlAnhGiayGiat}')" class="px-2 py-1 bg-white border border-slate-200 text-[10px] font-bold rounded-lg text-slate-600 flex items-center space-x-1">
+                                                            <i data-lucide="image" class="w-3 h-3"></i>
+                                                            <span>Ảnh giày giặt</span>
+                                                        </button>
+                                                    </div>
+                                                ` : ''}
+
+                                                <div class="flex flex-wrap gap-2 justify-end pt-1.5 border-t border-slate-200/50">
+                                                    ${t.trangThai === 'Đang xử lý' ? `<button onclick="updateGiatStatusFromSearch(${t.originalIndex}, 'trangThai', 'Đã hoàn tất')" class="px-2.5 py-1 bg-cyan-600 text-white text-[9px] font-bold rounded-lg flex items-center space-x-1"><i data-lucide="check" class="w-2.5 h-2.5"></i><span>Giao khách</span></button>` : ''}
+                                                    ${!t.trangThaiThanhToan.startsWith('Đã thanh toán') ? `<button onclick="updateGiatStatusFromSearch(${t.originalIndex}, 'trangThaiThanhToan', 'Đã thanh toán')" class="px-2.5 py-1 bg-emerald-600 text-white text-[9px] font-bold rounded-lg flex items-center space-x-1"><i data-lucide="credit-card" class="w-2.5 h-2.5"></i><span>Thanh toán</span></button>` : ''}
+                                                </div>
+                                            </div>
+                                        </div>`;
+                                }
+                            }).join('')}
+                        </div>
+                    </div>`;
+                resultsBox.appendChild(customerCard);
+            });
+            lucide.createIcons();
+        }
+
+        let currentHistFilter = 'tat-ca';
+        function filterHistory(type) {
+            currentHistFilter = type;
+            ['tat-ca', 'mua-giay', 'giat-giay'].forEach(k => {
+                document.getElementById(k === 'tat-ca' ? 'btn-hist-all' : (k === 'mua-giay' ? 'btn-hist-mua' : 'btn-hist-giat')).className = k === type ? "px-3 py-1.5 rounded-lg bg-white shadow-sm text-indigo-600" : "px-3 py-1.5 rounded-lg text-slate-600";
+            });
+            renderHistoryList();
+        }
+
+        // --- RENDER DANH SÁCH LỊCH SỬ (ĐÃ TÍCH HỢP HIỂN THỊ CHI PHÍ GIẶT GIÀY & SĐT KHÁCH) ---
+        function renderHistoryList() {
+            const listContainer = document.getElementById('history-list'); listContainer.innerHTML = "";
+            let list = [];
+            if (currentHistFilter === 'tat-ca' || currentHistFilter === 'mua-giay') dataStore.muaGiay.forEach(m => list.push({ ...m, filterType: 'mua', sortDate: new Date(m.thoiGian) }));
+            if (currentHistFilter === 'tat-ca' || currentHistFilter === 'giat-giay') dataStore.giatGiay.forEach(g => list.push({ ...g, filterType: 'giat', sortDate: new Date(g.thoiGian) }));
+            list.sort((a, b) => b.sortDate - a.sortDate);
+
+            if (list.length === 0) { listContainer.innerHTML = `<div class="text-center py-12 text-sm text-slate-400">Chưa có dữ liệu giao dịch.</div>`; return; }
+
+            list.forEach(item => {
+                const row = document.createElement('div');
+                const imageUrl = item.filterType === 'mua' ? item.urlAnhGiay : item.urlAnhGiayGiat;
+                row.className = "bg-white border border-slate-100 rounded-2xl p-4 shadow-sm";
+
+                if (imageUrl) {
+                    if (item.filterType === 'mua') {
+                        row.innerHTML = `<div class="grid grid-cols-2 gap-4"><div><span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 font-extrabold text-[9px] rounded-md tracking-wide uppercase">Mua giày</span><div class="text-lg font-black text-indigo-600 pt-1">${formatMoney(item.gia)}</div><div class="text-xs font-bold text-slate-700 flex items-center space-x-1"><i data-lucide="calendar" class="w-3.5 h-3.5 text-indigo-500"></i><span>${formatDate(item.thoiGian)}</span></div><h4 class="text-xs font-bold text-slate-900 mt-1.5 leading-tight">Khách: ${item.ten}</h4><p class="text-[10px] text-slate-400 font-medium">${item.sdt}</p></div><div class="relative h-28 rounded-xl overflow-hidden border" onclick="openImageZoom('${imageUrl}')"><img src="${imageUrl}" class="w-full h-full object-cover"></div></div>`;
+                    } else {
+                        row.innerHTML = `<div class="grid grid-cols-2 gap-4"><div><span class="px-2 py-0.5 bg-cyan-50 text-cyan-700 font-extrabold text-[9px] rounded-md tracking-wide uppercase">Dịch vụ giặt</span><div class="text-[15px] font-black text-cyan-600 pt-1">${formatMoney(item.chiPhi)}</div><div class="text-xs font-bold text-slate-700 flex items-center space-x-1"><i data-lucide="clock" class="w-3.5 h-3.5 text-cyan-500"></i><span>${formatDate(item.thoiGian)}</span></div><h4 class="text-xs font-bold text-slate-900 mt-1.5 leading-tight">Khách: ${item.tenKhachHang}</h4><p class="text-[10px] text-slate-400 font-medium">${item.sdt}</p></div><div class="relative h-28 rounded-xl overflow-hidden border" onclick="openImageZoom('${imageUrl}')"><img src="${imageUrl}" class="w-full h-full object-cover"></div></div>`;
+                    }
+                } else {
+                    if (item.filterType === 'mua') {
+                        row.innerHTML = `<div class="flex justify-between items-start"><div><span class="px-2 py-0.5 bg-indigo-100 text-indigo-700 font-extrabold text-[9px] rounded-md uppercase">Mua giày</span><div class="text-lg font-black text-indigo-600 mt-1">${formatMoney(item.gia)}</div><h4 class="text-xs font-bold text-slate-900 mt-1">Khách: ${item.ten} <span class="font-medium text-slate-400">(${item.sdt})</span></h4><p class="text-xs font-semibold text-slate-800">${item.tenGiay}</p></div><div class="text-xs font-bold text-slate-600">${formatDate(item.thoiGian)}</div></div>`;
+                    } else {
+                        row.innerHTML = `<div class="flex justify-between items-start"><div><span class="px-2 py-0.5 bg-cyan-100 text-cyan-700 font-extrabold text-[9px] rounded-md uppercase">Dịch vụ giặt</span><div class="text-lg font-black text-cyan-600 mt-1">${formatMoney(item.chiPhi)}</div><h4 class="text-xs font-bold text-slate-900">Khách: ${item.tenKhachHang} <span class="font-medium text-slate-400">(${item.sdt})</span></h4><p class="text-xs font-semibold text-slate-800">${item.dichVu}</p></div><div class="text-xs font-black text-cyan-700">${formatDate(item.thoiGian)}</div></div>`;
+                    }
+                }
+                listContainer.appendChild(row);
+            });
+            lucide.createIcons();
+        }
+
+        let currentDoanhThuTab = 'ngay';
+        function switchDoanhThuTab(type) {
+            currentDoanhThuTab = type;
+            document.getElementById('tab-dt-ngay').className = type === 'ngay' ? "font-bold text-indigo-600 underline" : "font-bold text-slate-500";
+            document.getElementById('tab-dt-thang').className = type === 'thang' ? "font-bold text-indigo-600 underline" : "font-bold text-slate-500";
+            document.getElementById('header-thoigian').innerText = type === 'ngay' ? "Ngày" : "Tháng";
+            calculateDoanhThu();
+        }
+
+        function calculateDoanhThu() {
+            const now = new Date(); const todayStr = now.toDateString();
+            let dnHômNay = 0; let doiHômNay = 0; let dnTháng = 0; let doiTháng = 0;
+
+            dataStore.muaGiay.forEach(m => {
+                const d = new Date(m.thoiGian);
+                if (d.toDateString() === todayStr) { dnHômNay += m.gia; doiHômNay++; }
+                if (d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()) { dnTháng += m.gia; doiTháng++; }
+            });
+
+            document.getElementById('doanhthu-homnay').innerText = formatMoney(dnHômNay);
+            document.getElementById('donhang-homnay').innerText = `${doiHômNay} đôi giày bán được`;
+            document.getElementById('doanhthu-thangnay').innerText = formatMoney(dnTháng);
+            document.getElementById('donhang-thangnay').innerText = `${doiTháng} đôi giày bán được`;
+
+            const tableBody = document.getElementById('table-doanhthu-body'); tableBody.innerHTML = "";
+            let groupData = {};
+
+            dataStore.muaGiay.forEach(m => {
+                const key = currentDoanhThuTab === 'ngay' ? m.thoiGian.split('T')[0] : `Tháng ${(new Date(m.thoiGian)).getMonth() + 1}/${(new Date(m.thoiGian)).getFullYear()}`;
+                if (!groupData[key]) groupData[key] = { phi: 0, count: 0 };
+                groupData[key].phi += m.gia; groupData[key].count++;
+            });
+
+            Object.keys(groupData).sort((a, b) => b.localeCompare(a)).forEach(k => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td class="py-3 text-slate-900">${k}</td><td class="py-3 text-center text-slate-700 font-bold">${groupData[k].count} đôi</td><td class="py-3 text-right font-bold text-indigo-600">${formatMoney(groupData[k].phi)}</td>`;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function autoFillName(sdtInputId, nameInputId) {
+            const sdtValue = document.getElementById(sdtInputId).value.trim();
+            if (!sdtValue || sdtValue.length < 9) return; 
+            let match = dataStore.giatGiay.find(g => g.sdt === sdtValue)?.tenKhachHang || dataStore.muaGiay.find(m => m.sdt === sdtValue)?.ten;
+            if (match) document.getElementById(nameInputId).value = match;
+        }
+
+        // Zoom ảnh toàn màn hình
+        function openImageZoom(src) {
+            document.getElementById('fullscreen-image').src = src;
+            document.getElementById('image-viewer-modal').classList.remove('hidden');
+        }
+
+        function toggleImageViewer(show) {
+            document.getElementById('image-viewer-modal').classList.toggle('hidden', !show);
+        }
+
+        function toggleBillUpload(show) {
+            document.getElementById('bill-upload-wrapper').classList.toggle('hidden', !show);
+            document.getElementById('mua-anh-bill').required = show;
+        }
+
+        function previewImage(input, previewId) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById(previewId).src = e.target.result;
+                    document.getElementById(previewId + '-box').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function clearPreview(inputId, previewBoxId) {
+            document.getElementById(inputId).value = "";
+            document.getElementById(previewBoxId).classList.add('hidden');
+        }
+
+        function formatMoney(amount) { return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount); }
+        function formatDate(isoString) { const d = new Date(isoString); return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')} - ${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`; }
+        function formatDayFormat(dateKey) { const parts = dateKey.split('-'); return `${parts[2]}/${parts[1]}/${parts[0]}`; }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            let bgClass = type === 'danger' ? "bg-danger" : (type === 'warning' ? "bg-warning" : "bg-success");
+            toast.className = `${bgClass} text-white flex items-center space-x-2 px-4 py-3 rounded-xl shadow-lg text-xs font-semibold transition duration-300 pointer-events-auto`;
+            toast.innerHTML = `<span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3500);
+        }
+    </script>
+</body>
+</html>
