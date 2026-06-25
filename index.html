@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi" class="h-full bg-slate-50">
 <head>
+    <!-- STREAMING_CHUNK: Khai báo Meta & Cài đặt Thư viện -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tiệm giày cũ Bình Dương - Quản Lý Nội Bộ</title>
@@ -34,8 +35,9 @@
 </head>
 <body class="h-full flex flex-col overflow-hidden text-slate-800">
 
-    <!-- HEADER (Đã gỡ bỏ toàn bộ nút cấu hình thừa) -->
-    <header class="bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between shrink-0 shadow-sm z-10">
+    <!-- HEADER -->
+    <!-- STREAMING_CHUNK: Giao diện Header Tiêu đề -->
+    <header class="bg-white border-b border-slate-100 px-4 py-3 flex items-center justify-between shrink-0 shadow-sm z-10">
         <div class="flex items-center space-x-3">
             <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-indigo-200">
                 <i data-lucide="package-open" class="w-6 h-6"></i>
@@ -54,8 +56,36 @@
         </div>
     </header>
 
+    <!-- ⚡ HỆ THỐNG MENU TAG NỔI BẬT CỠ LỚN (STICKY TOP TAGS - CĂN GIỮA & CHIA ĐỀU TỈ LỆ 5 Ô BẰNG NHAU TUYỆT ĐỐI) -->
+    <!-- STREAMING_CHUNK: Hệ thống Thẻ Tags lớn điều hướng trên Mobile -->
+    <div class="bg-white border-b border-slate-200 py-3 px-2 shrink-0">
+        <div class="flex space-x-1 w-full max-w-xl mx-auto justify-between items-center">
+            <button onclick="switchTab('mua-giay')" id="nav-mua-giay" class="flex-1 min-w-0 w-0 flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-1 py-2.5 px-0.5 rounded-xl text-[10px] sm:text-xs md:text-sm font-bold transition-all duration-200 bg-white text-slate-600 border border-slate-200 active:scale-95">
+                <i data-lucide="shopping-bag" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                <span class="truncate">Bán giày</span>
+            </button>
+            <button onclick="switchTab('giat-giay')" id="nav-giat-giay" class="flex-1 min-w-0 w-0 flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-1 py-2.5 px-0.5 rounded-xl text-[10px] sm:text-xs md:text-sm font-bold transition-all duration-200 bg-white text-slate-600 border border-slate-200 active:scale-95">
+                <i data-lucide="waves" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                <span class="truncate">Giặt giày</span>
+            </button>
+            <button onclick="switchTab('tra-cuu')" id="nav-tra-cuu" class="flex-1 min-w-0 w-0 flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-1 py-2.5 px-0.5 rounded-xl text-[10px] sm:text-xs md:text-sm font-bold transition-all duration-200 bg-white text-slate-600 border border-slate-200 active:scale-95">
+                <i data-lucide="search" class="w-3.5 h-3.5 sm:w-4 h-4"></i>
+                <span class="truncate">Tra cứu</span>
+            </button>
+            <button onclick="switchTab('lich-su')" id="nav-lich-su" class="flex-1 min-w-0 w-0 flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-1 py-2.5 px-0.5 rounded-xl text-[10px] sm:text-xs md:text-sm font-bold transition-all duration-200 bg-white text-slate-600 border border-slate-200 active:scale-95">
+                <i data-lucide="history" class="w-3.5 h-3.5 sm:w-4 h-4"></i>
+                <span class="truncate">Lịch sử</span>
+            </button>
+            <button onclick="switchTab('doanh-thu')" id="nav-doanh-thu" class="flex-1 min-w-0 w-0 flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-1 py-2.5 px-0.5 rounded-xl text-[10px] sm:text-xs md:text-sm font-bold transition-all duration-200 bg-white text-slate-600 border border-slate-200 active:scale-95">
+                <i data-lucide="bar-chart-3" class="w-3.5 h-3.5 sm:w-4 h-4"></i>
+                <span class="truncate">Doanh thu</span>
+            </button>
+        </div>
+    </div>
+
     <!-- MAIN CONTAINER (Scrollable) -->
-    <main class="flex-1 overflow-y-auto bg-slate-50 pb-24">
+    <!-- STREAMING_CHUNK: Vùng hiển thị Nội dung chính -->
+    <main class="flex-1 overflow-y-auto bg-slate-50 pb-8">
         
         <!-- TOAST NOTIFICATION CONTAINER -->
         <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
@@ -164,6 +194,7 @@
         </section>
 
         <!-- 2. PHẦN KHÁCH GIẶT GIÀY -->
+        <!-- STREAMING_CHUNK: Khu vực Form Tạo Đơn Giặt Giày -->
         <section id="section-giat-giay" class="p-4 space-y-4 max-w-xl mx-auto hidden">
             <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm space-y-4">
                 <div class="flex items-center space-x-2 text-cyan-600 border-b border-slate-100 pb-3">
@@ -206,13 +237,14 @@
                         </div>
                     </div>
 
+                    <!-- TIỀN CỌC GIẶT CŨNG ĐƯỢC TÍCH HỢP TỰ ĐỘNG THÊM 3 SỐ 0 -->
                     <div id="deposit-amount-wrapper" class="hidden space-y-1 animate-in fade-in duration-200">
                         <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Số tiền cọc (VND) *</label>
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                                 <i data-lucide="wallet" class="w-4 h-4"></i>
                             </span>
-                            <input type="number" id="giat-tiencoc" placeholder="Ví dụ: 50000"
+                            <input type="number" id="giat-tiencoc" placeholder="Ví dụ: 50 (sẽ tự thêm 000)" onblur="handlePriceBlur(this)"
                                    class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-white transition duration-200">
                         </div>
                     </div>
@@ -243,6 +275,7 @@
         </section>
 
         <!-- 3. PHẦN TRA CỨU -->
+        <!-- STREAMING_CHUNK: Giao diện Trang Tìm kiếm Tra cứu đơn hàng -->
         <section id="section-tra-cuu" class="p-4 space-y-4 max-w-xl mx-auto">
             <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm space-y-4">
                 <div class="flex items-center space-x-2 text-violet-600 border-b border-slate-100 pb-3">
@@ -270,7 +303,8 @@
             </div>
         </section>
 
-        <!-- 4. LỊCH SỬ GIAO DỊCH -->
+        <!-- 4. LẠCH SỬ GIAO DỊCH -->
+        <!-- STREAMING_CHUNK: Khu vực Lịch sử giao dịch -->
         <section id="section-lich-su" class="p-4 space-y-4 max-w-xl mx-auto hidden">
             <div class="flex items-center justify-between">
                 <h2 class="text-lg font-bold text-slate-950 flex items-center space-x-2">
@@ -287,6 +321,7 @@
         </section>
 
         <!-- 5. DOANH THU -->
+        <!-- STREAMING_CHUNK: Thống kê Doanh Thu Tiệm Giày -->
         <section id="section-doanh-thu" class="p-4 space-y-4 max-w-xl mx-auto hidden">
             <div class="grid grid-cols-2 gap-4">
                 <div class="bg-gradient-to-br from-indigo-600 to-indigo-800 rounded-2xl p-4 text-white shadow-lg shadow-indigo-100">
@@ -334,30 +369,6 @@
 
     </main>
 
-    <!-- NAVIGATION BAR -->
-    <nav class="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 px-2 py-1.5 flex justify-around items-center shrink-0 shadow-lg z-20">
-        <button onclick="switchTab('mua-giay')" id="nav-mua-giay" class="flex flex-col items-center space-y-0.5 py-1 px-3 rounded-xl transition duration-200 text-slate-400 hover:text-indigo-600">
-            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-            <span class="text-[10px] font-bold">Bán giày</span>
-        </button>
-        <button onclick="switchTab('giat-giay')" id="nav-giat-giay" class="flex flex-col items-center space-y-0.5 py-1 px-3 rounded-xl transition duration-200 text-slate-400 hover:text-indigo-600">
-            <i data-lucide="waves" class="w-5 h-5"></i>
-            <span class="text-[10px] font-bold">Giặt giày</span>
-        </button>
-        <button onclick="switchTab('tra-cuu')" id="nav-tra-cuu" class="flex flex-col items-center space-y-0.5 py-1 px-3 rounded-xl transition duration-200 text-indigo-600">
-            <i data-lucide="search" class="w-5 h-5"></i>
-            <span class="text-[10px] font-bold">Tra cứu</span>
-        </button>
-        <button onclick="switchTab('lich-su')" id="nav-lich-su" class="flex flex-col items-center space-y-0.5 py-1 px-3 rounded-xl transition duration-200 text-slate-400 hover:text-indigo-600">
-            <i data-lucide="history" class="w-5 h-5"></i>
-            <span class="text-[10px] font-bold">Lịch sử</span>
-        </button>
-        <button onclick="switchTab('doanh-thu')" id="nav-doanh-thu" class="flex flex-col items-center space-y-0.5 py-1 px-3 rounded-xl transition duration-200 text-slate-400 hover:text-indigo-600">
-            <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
-            <span class="text-[10px] font-bold">Doanh thu</span>
-        </button>
-    </nav>
-
     <!-- FULLSCREEN IMAGE VIEWER MODAL -->
     <div id="image-viewer-modal" class="fixed inset-0 bg-black/90 z-50 items-center justify-center p-4 hidden flex" onclick="toggleImageViewer(false)">
         <img id="fullscreen-image" src="" alt="Zoomed shoe" class="max-w-full max-h-full rounded-lg shadow-2xl object-contain">
@@ -387,6 +398,21 @@
         function saveToLocalStorage() {
             localStorage.setItem('sm_mua_giay_v3', JSON.stringify(dataStore.muaGiay));
             localStorage.setItem('sm_giat_giay_v3', JSON.stringify(dataStore.giatGiay));
+        }
+
+        // ĐỊNH DẠNG ĐƠN VỊ TIỀN TỆ (VND) - Được hoisting chính xác, đặt lên đầu để an toàn
+        function formatMoney(amount) { 
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount); 
+        }
+
+        function formatDate(isoString) { 
+            const d = new Date(isoString); 
+            return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')} - ${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`; 
+        }
+
+        function formatDayFormat(dateKey) { 
+            const parts = dateKey.split('-'); 
+            return `${parts[2]}/${parts[1]}/${parts[0]}`; 
         }
 
         window.onload = function() {
@@ -440,6 +466,7 @@
             });
         }
 
+        // STREAMING_CHUNK: Hàm lấy dữ liệu (GET) từ Baserow
         async function fetchDataFromBaserow() {
             const token = GLOBAL_CONFIG.baserowToken;
             const tableMuaId = GLOBAL_CONFIG.tableMua;
@@ -499,6 +526,7 @@
             }
         }
 
+        // STREAMING_CHUNK: Tải ảnh trực tiếp lên Baserow Cloud
         async function uploadToBaserow(file) {
             if (!file) return null;
             const token = GLOBAL_CONFIG.baserowToken;
@@ -562,7 +590,7 @@
             } catch (e) { console.error("Lỗi Telegram: ", e); }
         }
 
-        // HÀM CHUYỂN TAB (Đã được định nghĩa lại đầy đủ)
+        // ⚡ HÀM CHUYỂN TAB CẢI TIẾN - PHÂN CHIA 5 Ô TAGS CÓ KÍCH THƯỚC BẰNG NHAU TUYỆT ĐỐI (FLEX-1 MIN-W-0 W-0)
         function switchTab(tabName) {
             const sections = ['mua-giay', 'giat-giay', 'tra-cuu', 'lich-su', 'doanh-thu'];
             sections.forEach(s => {
@@ -570,17 +598,18 @@
                 const navEl = document.getElementById(`nav-${s}`);
                 if (secEl) secEl.classList.add('hidden');
                 if (navEl) {
-                    navEl.classList.remove('text-indigo-600');
-                    navEl.classList.add('text-slate-400');
+                    // Trả về lớp cấu hình của trạng thái CHƯA CHỌN (Màu xám, viền nhạt, chia tỷ lệ flex-1 min-w-0 w-0 để bằng nhau tuyệt đối)
+                    navEl.className = "flex-1 min-w-0 w-0 flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-1 py-2.5 px-0.5 rounded-xl text-[10px] sm:text-xs md:text-sm font-bold transition-all duration-200 bg-white text-slate-600 border border-slate-200 active:scale-95";
                 }
             });
 
             const targetSec = document.getElementById(`section-${tabName}`);
-            const targetNav = document.getElementById(`nav-${tabName}`);
+            const realTargetNav = document.getElementById(`nav-${tabName}`);
+            
             if (targetSec) targetSec.classList.remove('hidden');
-            if (targetNav) {
-                targetNav.classList.add('text-indigo-600');
-                targetNav.classList.remove('text-slate-400');
+            if (realTargetNav) {
+                // Áp dụng lớp cấu hình cho trạng thái ĐÃ CHỌN (Màu xanh Indigo nổi bật, có bóng đổ, giữ nguyên cấu trúc flex-1 min-w-0 w-0)
+                realTargetNav.className = "flex-1 min-w-0 w-0 flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-1 py-2.5 px-0.5 rounded-xl text-[10px] sm:text-xs md:text-sm font-bold transition-all duration-200 bg-indigo-600 text-white shadow-lg shadow-indigo-100 active:scale-95";
             }
 
             lucide.createIcons();
@@ -642,6 +671,9 @@
             let val = parseInt(input.value) || 0;
             if (val > 0 && val < 10000) {
                 input.value = val * 1000;
+            }
+            // Chỉ chạy tính tổng thanh toán khi sửa giá giày mua
+            if (input.classList.contains('prod-price')) {
                 calculateTotalPayment();
             }
         }
@@ -745,6 +777,10 @@
             let soTienCoc = 0;
             if (trangThaiThanhToanRadio === "Cọc") {
                 soTienCoc = Number(document.getElementById('giat-tiencoc').value.trim()) || 0;
+                // Áp dụng bộ lọc 3 số 0 cho tiền cọc nếu gõ rút gọn
+                if (soTienCoc > 0 && soTienCoc < 10000) {
+                    soTienCoc = soTienCoc * 1000;
+                }
             }
 
             const fileGiayGiat = document.getElementById('giat-anh-giay').files[0];
@@ -820,7 +856,7 @@
             document.getElementById('input-search').focus();
         }
 
-        // CẬP NHẬT TRẠNG THÁI TỪ Ô TÌM KIẾM HỒ SƠ KHÁCH HÀNG
+        // STREAMING_CHUNK: Cập nhật nhanh trạng thái đơn hàng từ Tra cứu
         async function updateGiatStatusFromSearch(originalIndex, field, newValue) {
             const item = dataStore.giatGiay[originalIndex];
             if (!item || !item.id) return;
@@ -859,7 +895,8 @@
             }
         }
 
-        // HÀM TRA CỨU HỒ SƠ KHÁCH HÀNG (Đmax TÍCH HỢP HIỂN THỊ ẢNH GIÀY GIẶT CHO NHÂN VIÊN ĐỐI CHIẾU)
+        // HÀM TRA CỨU HỒ SƠ KHÁCH HÀNG (ĐÃ TỐI ƯU HÓA HIỂN THỊ THẺ TO RÕ RÀNG NHƯ BÊN TRANG LỊCH SỬ)
+        // STREAMING_CHUNK: Khối xử lý Tìm kiếm hồ sơ và vẽ Cards tra cứu thông minh
         function executeSearch() {
             const query = document.getElementById('input-search').value.trim().toLowerCase();
             const resultsBox = document.getElementById('search-results');
@@ -897,43 +934,114 @@
                         <div class="space-y-3 relative before:absolute before:left-3 before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
                             ${allTransactions.map(t => {
                                 if (t.type === 'Mua') {
-                                    return `
-                                        <div class="relative pl-7 space-y-1 text-xs">
-                                            <span class="absolute left-1.5 top-1.5 w-3 h-3 bg-indigo-500 border-2 border-white rounded-full"></span>
-                                            <div class="flex justify-between items-center"><span class="px-2 py-0.5 bg-indigo-100 text-indigo-700 text-[9px] font-extrabold rounded-md uppercase">Mua giày</span><span class="text-[10px] text-slate-400 font-medium">${formatDate(t.thoiGian)}</span></div>
-                                            <div class="bg-slate-50 border border-slate-100 p-2.5 rounded-xl space-y-2 mt-1">
-                                                <div class="flex justify-between items-start gap-2">
-                                                    <div><p class="font-extrabold text-slate-800">${t.tenGiay}</p><p class="text-[10px] text-slate-400">Hình thức: <span class="font-semibold text-slate-700">${t.hinhThuc}</span></p></div>
-                                                    <div class="text-right"><p class="font-black text-indigo-600">${formatMoney(t.gia)}</p></div>
+                                    if (t.urlAnhGiay) {
+                                        return `
+                                            <div class="relative pl-7 space-y-1 mt-2">
+                                                <span class="absolute left-1.5 top-5 w-3 h-3 bg-indigo-500 border-2 border-white rounded-full ring-2 ring-indigo-100"></span>
+                                                <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200">
+                                                    <div class="grid grid-cols-2 gap-4">
+                                                        <div class="flex flex-col justify-between space-y-2">
+                                                            <div class="space-y-1">
+                                                                <span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 font-extrabold text-[9px] rounded-md tracking-wide uppercase">Mua giày</span>
+                                                                <div class="text-lg font-black text-indigo-600 tracking-tight leading-none pt-1">${formatMoney(t.gia)}</div>
+                                                                <div class="text-xs font-bold text-slate-700 flex items-center space-x-1 pt-1">
+                                                                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-indigo-500"></i>
+                                                                    <span>${formatDate(t.thoiGian)}</span>
+                                                                </div>
+                                                                <h4 class="text-xs font-bold text-slate-900 mt-1.5 leading-tight">Khách: ${t.ten}</h4>
+                                                                <p class="text-[10px] text-slate-400 font-medium">${t.sdt}</p>
+                                                            </div>
+                                                            <div class="pt-1.5 border-t border-slate-200">
+                                                                <p class="text-xs font-semibold text-slate-800 line-clamp-1">${t.tenGiay}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="relative h-28 rounded-xl overflow-hidden border cursor-pointer group" onclick="openImageZoom('${t.urlAnhGiay}')">
+                                                            <img src="${t.urlAnhGiay}" class="w-full h-full object-cover">
+                                                            ${t.urlAnhBill && t.hinhThuc === 'Chuyển khoản' ? `
+                                                                <button onclick="event.stopPropagation(); openImageZoom('${t.urlAnhBill}')" class="absolute bottom-2 right-2 bg-indigo-600/90 text-white px-1.5 py-0.5 rounded-lg text-[8px] font-bold shadow-md flex items-center space-x-1 hover:bg-indigo-700 transition">
+                                                                    <i data-lucide="receipt" class="w-2.5 h-2.5"></i>
+                                                                    <span>Xem Bill</span>
+                                                                </button>
+                                                            ` : ''}
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                ${t.urlAnhGiay ? `<div class="flex items-center space-x-2 mt-1"><button onclick="openImageZoom('${t.urlAnhGiay}')" class="px-2 py-1 bg-white border border-slate-200 text-[10px] font-bold rounded-lg text-slate-600 flex items-center space-x-1"><i data-lucide="image" class="w-3 h-3"></i><span>Ảnh giày</span></button></div>` : ''}
-                                            </div>
-                                        </div>`;
+                                            </div>`;
+                                    } else {
+                                        return `
+                                            <div class="relative pl-7 space-y-1 mt-2">
+                                                <span class="absolute left-1.5 top-5 w-3 h-3 bg-indigo-500 border-2 border-white rounded-full ring-2 ring-indigo-100"></span>
+                                                <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200">
+                                                    <div class="flex justify-between items-start">
+                                                        <div class="space-y-1">
+                                                            <span class="px-2 py-0.5 bg-indigo-100 text-indigo-700 font-extrabold text-[9px] rounded-md tracking-wide uppercase">Mua giày</span>
+                                                            <div class="text-lg font-black text-indigo-600 mt-1">${formatMoney(t.gia)}</div>
+                                                            <h4 class="text-xs font-bold text-slate-900 mt-1">Khách: ${t.ten} <span class="font-medium text-slate-400">(${t.sdt})</span></h4>
+                                                            <p class="text-xs font-semibold text-slate-800">${t.tenGiay}</p>
+                                                        </div>
+                                                        <div class="text-xs font-bold text-slate-600">${formatDate(t.thoiGian)}</div>
+                                                    </div>
+                                                </div>
+                                            </div>`;
+                                    }
                                 } else {
                                     let payBadgeClass = t.trangThaiThanhToan.startsWith('Đã thanh toán') ? "bg-emerald-100 text-emerald-700" : (t.trangThaiThanhToan.startsWith('Cọc') ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-700");
-                                    return `
-                                        <div class="relative pl-7 space-y-1 text-xs">
-                                            <span class="absolute left-1.5 top-1.5 w-3 h-3 bg-cyan-500 border-2 border-white rounded-full"></span>
-                                            <div class="flex justify-between items-center"><div class="flex items-center space-x-1.5"><span class="px-2 py-0.5 bg-cyan-100 text-cyan-700 text-[9px] font-extrabold rounded-md uppercase">Giặt giày</span><span class="px-1.5 py-0.5 text-[9px] font-bold rounded ${payBadgeClass}">${t.trangThaiThanhToan}</span></div><span class="text-[10px] text-slate-400 font-medium">${formatDate(t.thoiGian)}</span></div>
-                                            <div class="bg-slate-50 border border-slate-100 p-2.5 rounded-xl space-y-2 mt-1">
-                                                <div><p class="font-extrabold text-slate-800">${t.dichVu}</p><p class="text-xs font-bold text-slate-700 mt-1">Phí giặt: <span class="text-cyan-600 font-black">${formatMoney(t.chiPhi)}</span></p><p class="text-[10px] text-slate-400">Xử lý: <span class="font-extrabold ${t.trangThai === 'Đã hoàn tất' ? 'text-emerald-600' : 'text-amber-500'}">${t.trangThai === 'Đã hoàn tất' ? 'Đã xong' : 'Đang giặt'}</span></p></div>
-                                                
-                                                <!-- TÍCH HỢP HIỂN THỊ ẢNH GIÀY GIẶT CHO NHÂN VIÊN ĐỐI CHIẾU KHI TRA CỨU -->
-                                                ${t.urlAnhGiayGiat ? `
-                                                    <div class="flex items-center space-x-2 mt-1">
-                                                        <button onclick="openImageZoom('${t.urlAnhGiayGiat}')" class="px-2 py-1 bg-white border border-slate-200 text-[10px] font-bold rounded-lg text-slate-600 flex items-center space-x-1">
-                                                            <i data-lucide="image" class="w-3 h-3"></i>
-                                                            <span>Ảnh giày giặt</span>
-                                                        </button>
+                                    if (t.urlAnhGiayGiat) {
+                                        return `
+                                            <div class="relative pl-7 space-y-1 mt-2">
+                                                <span class="absolute left-1.5 top-5 w-3 h-3 bg-cyan-500 border-2 border-white rounded-full ring-2 ring-cyan-100"></span>
+                                                <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200">
+                                                    <div class="grid grid-cols-2 gap-4">
+                                                        <div class="flex flex-col justify-between space-y-2">
+                                                            <div class="space-y-1">
+                                                                <div class="flex items-center space-x-1.5 flex-wrap gap-y-1">
+                                                                    <span class="px-2 py-0.5 bg-cyan-50 text-cyan-700 font-extrabold text-[9px] rounded-md tracking-wide uppercase">Dịch vụ giặt</span>
+                                                                    <span class="px-1.5 py-0.5 border text-[9px] rounded font-bold ${payBadgeClass}">${t.trangThaiThanhToan}</span>
+                                                                </div>
+                                                                <div class="text-[15px] font-black text-cyan-600 pt-1">${formatMoney(t.chiPhi)}</div>
+                                                                <div class="text-xs font-bold text-slate-700 flex items-center space-x-1 pt-1">
+                                                                    <i data-lucide="clock" class="w-3.5 h-3.5 text-cyan-500"></i>
+                                                                    <span>${formatDate(t.thoiGian)}</span>
+                                                                </div>
+                                                                <h4 class="text-xs font-bold text-slate-900 mt-1.5 leading-tight">Khách: ${t.tenKhachHang}</h4>
+                                                                <p class="text-[10px] text-slate-400 font-medium">${t.sdt}</p>
+                                                            </div>
+                                                            <div class="pt-1.5 border-t border-slate-100">
+                                                                <p class="text-[10px] text-slate-500 font-medium">Trạng thái: ${t.trangThai === 'Đã hoàn tất' ? 'Đã xong' : 'Đang giặt'}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="relative h-28 rounded-xl overflow-hidden border cursor-pointer" onclick="openImageZoom('${t.urlAnhGiayGiat}')">
+                                                            <img src="${t.urlAnhGiayGiat}" class="w-full h-full object-cover">
+                                                        </div>
                                                     </div>
-                                                ` : ''}
-
-                                                <div class="flex flex-wrap gap-2 justify-end pt-1.5 border-t border-slate-200/50">
-                                                    ${t.trangThai === 'Đang xử lý' ? `<button onclick="updateGiatStatusFromSearch(${t.originalIndex}, 'trangThai', 'Đã hoàn tất')" class="px-2.5 py-1 bg-cyan-600 text-white text-[9px] font-bold rounded-lg flex items-center space-x-1"><i data-lucide="check" class="w-2.5 h-2.5"></i><span>Giao khách</span></button>` : ''}
-                                                    ${!t.trangThaiThanhToan.startsWith('Đã thanh toán') ? `<button onclick="updateGiatStatusFromSearch(${t.originalIndex}, 'trangThaiThanhToan', 'Đã thanh toán')" class="px-2.5 py-1 bg-emerald-600 text-white text-[9px] font-bold rounded-lg flex items-center space-x-1"><i data-lucide="credit-card" class="w-2.5 h-2.5"></i><span>Thanh toán</span></button>` : ''}
+                                                    <div class="flex flex-wrap gap-2 justify-end pt-1.5 border-t border-slate-200/50 mt-2">
+                                                        ${t.trangThai === 'Đang xử lý' ? `<button onclick="updateGiatStatusFromSearch(${t.originalIndex}, 'trangThai', 'Đã hoàn tất')" class="px-2.5 py-1 bg-cyan-600 text-white text-[9px] font-bold rounded-lg flex items-center space-x-1"><i data-lucide="check" class="w-2.5 h-2.5"></i><span>Giao khách</span></button>` : ''}
+                                                        ${!t.trangThaiThanhToan.startsWith('Đã thanh toán') ? `<button onclick="updateGiatStatusFromSearch(${t.originalIndex}, 'trangThaiThanhToan', 'Đã thanh toán')" class="px-2.5 py-1 bg-emerald-600 text-white text-[9px] font-bold rounded-lg flex items-center space-x-1"><i data-lucide="credit-card" class="w-2.5 h-2.5"></i><span>Thanh toán</span></button>` : ''}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>`;
+                                            </div>`;
+                                    } else {
+                                        return `
+                                            <div class="relative pl-7 space-y-1 mt-2">
+                                                <span class="absolute left-1.5 top-5 w-3 h-3 bg-cyan-500 border-2 border-white rounded-full ring-2 ring-cyan-100"></span>
+                                                <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition duration-200">
+                                                    <div class="flex justify-between items-start">
+                                                        <div class="space-y-1">
+                                                            <span class="px-2 py-0.5 bg-cyan-100 text-cyan-700 font-extrabold text-[9px] rounded-md tracking-wide uppercase">Dịch vụ giặt</span>
+                                                            <div class="text-lg font-black text-cyan-600 mt-1">${formatMoney(t.chiPhi)}</div>
+                                                            <h4 class="text-xs font-bold text-slate-900">Khách: ${t.tenKhachHang} <span class="font-medium text-slate-400">(${t.sdt})</span></h4>
+                                                            <p class="text-xs font-semibold text-slate-800">${t.dichVu}</p>
+                                                            <p class="text-[10px] text-slate-400">Trạng thái: <span class="font-extrabold ${t.trangThai === 'Đã hoàn tất' ? 'text-emerald-600' : 'text-amber-500'}">${t.trangThai === 'Đã hoàn tất' ? 'Đã xong' : 'Đang giặt'}</span></p>
+                                                        </div>
+                                                        <div class="text-xs font-black text-cyan-700">${formatDate(t.thoiGian)}</div>
+                                                    </div>
+                                                    <div class="flex flex-wrap gap-2 justify-end pt-1.5 border-t border-slate-200/50 mt-2">
+                                                        ${t.trangThai === 'Đang xử lý' ? `<button onclick="updateGiatStatusFromSearch(${t.originalIndex}, 'trangThai', 'Đã hoàn tất')" class="px-2.5 py-1 bg-cyan-600 text-white text-[9px] font-bold rounded-lg flex items-center space-x-1"><i data-lucide="check" class="w-2.5 h-2.5"></i><span>Giao khách</span></button>` : ''}
+                                                        ${!t.trangThaiThanhToan.startsWith('Đã thanh toán') ? `<button onclick="updateGiatStatusFromSearch(${t.originalIndex}, 'trangThaiThanhToan', 'Đã thanh toán')" class="px-2.5 py-1 bg-emerald-600 text-white text-[9px] font-bold rounded-lg flex items-center space-x-1"><i data-lucide="credit-card" class="w-2.5 h-2.5"></i><span>Thanh toán</span></button>` : ''}
+                                                    </div>
+                                                </div>
+                                            </div>`;
+                                    }
                                 }
                             }).join('')}
                         </div>
@@ -953,6 +1061,7 @@
         }
 
         // --- RENDER DANH SÁCH LỊCH SỬ (ĐÃ TÍCH HỢP HIỂN THỊ CHI PHÍ GIẶT GIÀY & SĐT KHÁCH) ---
+        // STREAMING_CHUNK: Khối vẽ giao diện dòng Lịch sử giao dịch chi tiết
         function renderHistoryList() {
             const listContainer = document.getElementById('history-list'); listContainer.innerHTML = "";
             let list = [];
@@ -1063,10 +1172,6 @@
             document.getElementById(inputId).value = "";
             document.getElementById(previewBoxId).classList.add('hidden');
         }
-
-        function formatMoney(amount) { return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount); }
-        function formatDate(isoString) { const d = new Date(isoString); return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')} - ${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`; }
-        function formatDayFormat(dateKey) { const parts = dateKey.split('-'); return `${parts[2]}/${parts[1]}/${parts[0]}`; }
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
