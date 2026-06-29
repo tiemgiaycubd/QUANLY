@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi" class="h-full bg-slate-50">
 <head>
-    <!-- STREAMING_CHUNK: Khai báo Meta & Cài đặt Thư viện -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tiệm giày cũ Bình Dương - Quản Lý Nội Bộ</title>
@@ -36,7 +35,6 @@
 <body class="h-full flex flex-col overflow-hidden text-slate-800">
 
     <!-- HEADER -->
-    <!-- STREAMING_CHUNK: Giao diện Header Tiêu đề -->
     <header class="bg-white border-b border-slate-100 px-4 py-3 flex items-center justify-between shrink-0 shadow-sm z-10">
         <div class="flex items-center space-x-3">
             <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-indigo-200">
@@ -49,7 +47,6 @@
         </div>
         
         <div class="flex items-center space-x-1.5">
-            <!-- Nút Tải lại/Đồng bộ trực tiếp dữ liệu từ Baserow -->
             <button onclick="fetchDataFromBaserow()" class="p-2.5 hover:bg-slate-100 rounded-xl transition duration-200 relative group" title="Làm mới & Đồng bộ dữ liệu">
                 <i data-lucide="refresh-cw" class="w-5 h-5 text-slate-600 group-hover:rotate-180 transition-transform duration-500"></i>
             </button>
@@ -57,7 +54,6 @@
     </header>
 
     <!-- ⚡ HỆ THỐNG MENU TAG NỔI BẬT CỠ LỚN (STICKY TOP TAGS - CĂN GIỮA & CHIA ĐỀU TỈ LỆ 5 Ô BẰNG NHAU TUYỆT ĐỐI) -->
-    <!-- STREAMING_CHUNK: Hệ thống Thẻ Tags lớn điều hướng trên Mobile -->
     <div class="bg-white border-b border-slate-200 py-3 px-2 shrink-0">
         <div class="flex space-x-1 w-full max-w-xl mx-auto justify-between items-center">
             <button onclick="switchTab('mua-giay')" id="nav-mua-giay" class="flex-1 min-w-0 w-0 flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-1 py-2.5 px-0.5 rounded-xl text-[10px] sm:text-xs md:text-sm font-bold transition-all duration-200 bg-white text-slate-600 border border-slate-200 active:scale-95">
@@ -84,7 +80,6 @@
     </div>
 
     <!-- MAIN CONTAINER (Scrollable) -->
-    <!-- STREAMING_CHUNK: Vùng hiển thị Nội dung chính -->
     <main class="flex-1 overflow-y-auto bg-slate-50 pb-8">
         
         <!-- TOAST NOTIFICATION CONTAINER -->
@@ -100,8 +95,19 @@
                     </div>
                 </div>
 
+                <!-- THANH LỰA CHỌN PHÂN LOẠI KHÁCH HÀNG (CUNG CẤP THÔNG TIN hoặc ẨN DANH) -->
+                <div class="bg-slate-100 p-1 rounded-xl flex border border-slate-200 mb-2">
+                    <button type="button" onclick="setCustomerMode(false)" id="btn-mode-info" class="flex-1 py-2 text-xs font-bold rounded-lg bg-white text-indigo-600 shadow-sm transition">
+                        Cung cấp SĐT & Tên
+                    </button>
+                    <button type="button" onclick="setCustomerMode(true)" id="btn-mode-anon" class="flex-1 py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-700 transition">
+                        Khách ẩn danh / Không SĐT
+                    </button>
+                </div>
+
                 <form id="form-mua-giay" class="space-y-4" onsubmit="submitMuaGiay(event)">
-                    <div class="grid grid-cols-2 gap-3">
+                    <!-- KHUNG THÔNG TIN KHÁCH HÀNG - SẼ ẨN HIỆN THEO CHẾ ĐỘ -->
+                    <div id="customer-info-wrapper" class="grid grid-cols-2 gap-3 transition-all duration-300">
                         <div>
                             <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Số điện thoại *</label>
                             <input type="tel" id="mua-sdt" required placeholder="SĐT khách hàng" oninput="autoFillName('mua-sdt', 'mua-ten')"
@@ -194,7 +200,6 @@
         </section>
 
         <!-- 2. PHẦN KHÁCH GIẶT GIÀY -->
-        <!-- STREAMING_CHUNK: Khu vực Form Tạo Đơn Giặt Giày -->
         <section id="section-giat-giay" class="p-4 space-y-4 max-w-xl mx-auto hidden">
             <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm space-y-4">
                 <div class="flex items-center space-x-2 text-cyan-600 border-b border-slate-100 pb-3">
@@ -237,7 +242,6 @@
                         </div>
                     </div>
 
-                    <!-- TIỀN CỌC GIẶT CŨNG ĐƯỢC TÍCH HỢP TỰ ĐỘNG THÊM 3 SỐ 0 -->
                     <div id="deposit-amount-wrapper" class="hidden space-y-1 animate-in fade-in duration-200">
                         <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Số tiền cọc (VND) *</label>
                         <div class="relative">
@@ -275,7 +279,6 @@
         </section>
 
         <!-- 3. PHẦN TRA CỨU -->
-        <!-- STREAMING_CHUNK: Giao diện Trang Tìm kiếm Tra cứu đơn hàng -->
         <section id="section-tra-cuu" class="p-4 space-y-4 max-w-xl mx-auto">
             <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm space-y-4">
                 <div class="flex items-center space-x-2 text-violet-600 border-b border-slate-100 pb-3">
@@ -303,8 +306,7 @@
             </div>
         </section>
 
-        <!-- 4. LẠCH SỬ GIAO DỊCH -->
-        <!-- STREAMING_CHUNK: Khu vực Lịch sử giao dịch -->
+        <!-- 4. LỊCH SỬ GIAO DỊCH -->
         <section id="section-lich-su" class="p-4 space-y-4 max-w-xl mx-auto hidden">
             <div class="flex items-center justify-between">
                 <h2 class="text-lg font-bold text-slate-950 flex items-center space-x-2">
@@ -321,7 +323,6 @@
         </section>
 
         <!-- 5. DOANH THU -->
-        <!-- STREAMING_CHUNK: Thống kê Doanh Thu Tiệm Giày -->
         <section id="section-doanh-thu" class="p-4 space-y-4 max-w-xl mx-auto hidden">
             <div class="grid grid-cols-2 gap-4">
                 <div class="bg-gradient-to-br from-indigo-600 to-indigo-800 rounded-2xl p-4 text-white shadow-lg shadow-indigo-100">
@@ -394,6 +395,7 @@
         };
 
         let productRowCount = 0;
+        let isAnonymousCustomer = false; // Trạng thái kiểm soát khách ẩn danh
 
         function saveToLocalStorage() {
             localStorage.setItem('sm_mua_giay_v3', JSON.stringify(dataStore.muaGiay));
@@ -413,6 +415,32 @@
         function formatDayFormat(dateKey) { 
             const parts = dateKey.split('-'); 
             return `${parts[2]}/${parts[1]}/${parts[0]}`; 
+        }
+
+        // ⚡ THIẾT LẬP CHẾ ĐỘ ẨN DANH / KHÔNG CUNG CẤP SĐT
+        function setCustomerMode(isAnon) {
+            isAnonymousCustomer = isAnon;
+            const sdtInput = document.getElementById('mua-sdt');
+            const tenInput = document.getElementById('mua-ten');
+            const wrapper = document.getElementById('customer-info-wrapper');
+            const btnInfo = document.getElementById('btn-mode-info');
+            const btnAnon = document.getElementById('btn-mode-anon');
+
+            if (isAnon) {
+                wrapper.classList.add('hidden');
+                sdtInput.required = false;
+                tenInput.required = false;
+                sdtInput.value = "";
+                tenInput.value = "";
+                btnAnon.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-white text-indigo-600 shadow-sm transition";
+                btnInfo.className = "flex-1 py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-700 transition";
+            } else {
+                wrapper.classList.remove('hidden');
+                sdtInput.required = true;
+                tenInput.required = true;
+                btnInfo.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-white text-indigo-600 shadow-sm transition";
+                btnAnon.className = "flex-1 py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-700 transition";
+            }
         }
 
         window.onload = function() {
@@ -466,7 +494,6 @@
             });
         }
 
-        // STREAMING_CHUNK: Hàm lấy dữ liệu (GET) từ Baserow
         async function fetchDataFromBaserow() {
             const token = GLOBAL_CONFIG.baserowToken;
             const tableMuaId = GLOBAL_CONFIG.tableMua;
@@ -526,7 +553,6 @@
             }
         }
 
-        // STREAMING_CHUNK: Tải ảnh trực tiếp lên Baserow Cloud
         async function uploadToBaserow(file) {
             if (!file) return null;
             const token = GLOBAL_CONFIG.baserowToken;
@@ -590,7 +616,7 @@
             } catch (e) { console.error("Lỗi Telegram: ", e); }
         }
 
-        // ⚡ HÀM CHUYỂN TAB CẢI TIẾN - PHÂN CHIA 5 Ô TAGS CÓ KÍCH THƯỚC BẰNG NHAU TUYỆT ĐỐI (FLEX-1 MIN-W-0 W-0)
+        // HÀM CHUYỂN TAB (Đã được định nghĩa lại đầy đủ)
         function switchTab(tabName) {
             const sections = ['mua-giay', 'giat-giay', 'tra-cuu', 'lich-su', 'doanh-thu'];
             sections.forEach(s => {
@@ -683,8 +709,11 @@
             const token = GLOBAL_CONFIG.baserowToken;
             const tableMuaId = GLOBAL_CONFIG.tableMua;
             const btnSubmit = document.getElementById('btn-submit-ban');
-            const ten = document.getElementById('mua-ten').value.trim();
-            const sdt = document.getElementById('mua-sdt').value.trim();
+            
+            // Xử lý nạp giá trị khi có chế độ ẩn danh
+            const sdt = isAnonymousCustomer ? "Khách ẩn danh" : document.getElementById('mua-sdt').value.trim();
+            const ten = isAnonymousCustomer ? "Khách ẩn danh" : document.getElementById('mua-ten').value.trim();
+
             const hinhThuc = document.querySelector('input[name="hinhthuc"]:checked').value;
             const fileBill = document.getElementById('mua-anh-bill').files[0];
             const fileGiayChung = document.getElementById('mua-anh-giay-chung').files[0];
@@ -750,6 +779,7 @@
                 await fetchDataFromBaserow();
 
                 document.getElementById('form-mua-giay').reset();
+                setCustomerMode(false); // Trả về mặc định
                 document.getElementById('product-rows-container').innerHTML = "";
                 addProductRow();
                 clearPreview('mua-anh-giay-chung', 'giay-chung-preview-box');
@@ -856,7 +886,6 @@
             document.getElementById('input-search').focus();
         }
 
-        // STREAMING_CHUNK: Cập nhật nhanh trạng thái đơn hàng từ Tra cứu
         async function updateGiatStatusFromSearch(originalIndex, field, newValue) {
             const item = dataStore.giatGiay[originalIndex];
             if (!item || !item.id) return;
@@ -896,7 +925,6 @@
         }
 
         // HÀM TRA CỨU HỒ SƠ KHÁCH HÀNG (ĐÃ TỐI ƯU HÓA HIỂN THỊ THẺ TO RÕ RÀNG NHƯ BÊN TRANG LỊCH SỬ)
-        // STREAMING_CHUNK: Khối xử lý Tìm kiếm hồ sơ và vẽ Cards tra cứu thông minh
         function executeSearch() {
             const query = document.getElementById('input-search').value.trim().toLowerCase();
             const resultsBox = document.getElementById('search-results');
@@ -1061,7 +1089,6 @@
         }
 
         // --- RENDER DANH SÁCH LỊCH SỬ (ĐÃ TÍCH HỢP HIỂN THỊ CHI PHÍ GIẶT GIÀY & SĐT KHÁCH) ---
-        // STREAMING_CHUNK: Khối vẽ giao diện dòng Lịch sử giao dịch chi tiết
         function renderHistoryList() {
             const listContainer = document.getElementById('history-list'); listContainer.innerHTML = "";
             let list = [];
@@ -1078,9 +1105,9 @@
 
                 if (imageUrl) {
                     if (item.filterType === 'mua') {
-                        row.innerHTML = `<div class="grid grid-cols-2 gap-4"><div><span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 font-extrabold text-[9px] rounded-md tracking-wide uppercase">Mua giày</span><div class="text-lg font-black text-indigo-600 pt-1">${formatMoney(item.gia)}</div><div class="text-xs font-bold text-slate-700 flex items-center space-x-1"><i data-lucide="calendar" class="w-3.5 h-3.5 text-indigo-500"></i><span>${formatDate(item.thoiGian)}</span></div><h4 class="text-xs font-bold text-slate-900 mt-1.5 leading-tight">Khách: ${item.ten}</h4><p class="text-[10px] text-slate-400 font-medium">${item.sdt}</p></div><div class="relative h-28 rounded-xl overflow-hidden border" onclick="openImageZoom('${imageUrl}')"><img src="${imageUrl}" class="w-full h-full object-cover"></div></div>`;
+                        row.innerHTML = `<div class="grid grid-cols-2 gap-4"><div><span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 font-extrabold text-[9px] rounded-md uppercase">Mua giày</span><div class="text-lg font-black text-indigo-600 pt-1">${formatMoney(item.gia)}</div><div class="text-xs font-bold text-slate-700 flex items-center space-x-1"><i data-lucide="calendar" class="w-3.5 h-3.5 text-indigo-500"></i><span>${formatDate(item.thoiGian)}</span></div><h4 class="text-xs font-bold text-slate-900 mt-1.5 leading-tight">Khách: ${item.ten}</h4><p class="text-[10px] text-slate-400 font-medium">${item.sdt}</p></div><div class="relative h-28 rounded-xl overflow-hidden border" onclick="openImageZoom('${imageUrl}')"><img src="${imageUrl}" class="w-full h-full object-cover"></div></div>`;
                     } else {
-                        row.innerHTML = `<div class="grid grid-cols-2 gap-4"><div><span class="px-2 py-0.5 bg-cyan-50 text-cyan-700 font-extrabold text-[9px] rounded-md tracking-wide uppercase">Dịch vụ giặt</span><div class="text-[15px] font-black text-cyan-600 pt-1">${formatMoney(item.chiPhi)}</div><div class="text-xs font-bold text-slate-700 flex items-center space-x-1"><i data-lucide="clock" class="w-3.5 h-3.5 text-cyan-500"></i><span>${formatDate(item.thoiGian)}</span></div><h4 class="text-xs font-bold text-slate-900 mt-1.5 leading-tight">Khách: ${item.tenKhachHang}</h4><p class="text-[10px] text-slate-400 font-medium">${item.sdt}</p></div><div class="relative h-28 rounded-xl overflow-hidden border" onclick="openImageZoom('${imageUrl}')"><img src="${imageUrl}" class="w-full h-full object-cover"></div></div>`;
+                        row.innerHTML = `<div class="grid grid-cols-2 gap-4"><div><span class="px-2 py-0.5 bg-cyan-50 text-cyan-700 font-extrabold text-[9px] rounded-md uppercase">Dịch vụ giặt</span><div class="text-[15px] font-black text-cyan-600 pt-1">${formatMoney(item.chiPhi)}</div><div class="text-xs font-bold text-slate-700 flex items-center space-x-1"><i data-lucide="clock" class="w-3.5 h-3.5 text-cyan-500"></i><span>${formatDate(item.thoiGian)}</span></div><h4 class="text-xs font-bold text-slate-900 mt-1.5 leading-tight">Khách: ${item.tenKhachHang}</h4><p class="text-[10px] text-slate-400 font-medium">${item.sdt}</p></div><div class="relative h-28 rounded-xl overflow-hidden border" onclick="openImageZoom('${imageUrl}')"><img src="${imageUrl}" class="w-full h-full object-cover"></div></div>`;
                     }
                 } else {
                     if (item.filterType === 'mua') {
