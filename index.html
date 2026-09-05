@@ -116,60 +116,66 @@
                         <i data-lucide="shopping-bag" class="w-5 h-5 text-indigo-600"></i>
                         <h2 class="text-base font-bold text-slate-900">Tạo Đơn Bán Giày</h2>
                     </div>
-                    <button type="button" onclick="fillAnonymous()" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 text-[10px] font-bold rounded-md transition flex items-center space-x-1 border border-slate-200">
+                    <button type="button" onclick="fillAnonymous()" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-[10px] font-bold rounded-lg transition flex items-center space-x-1 border border-slate-200">
                         <i data-lucide="user-minus" class="w-3 h-3"></i><span>Khách Ẩn Danh</span>
                     </button>
                 </div>
 
-                <form id="form-mua" onsubmit="submitMuaGiay(event)" class="space-y-3">
-                    <div class="grid grid-cols-2 gap-2.5">
+                <form id="form-mua" onsubmit="submitMuaGiay(event)" class="space-y-4">
+                    <div class="grid grid-cols-2 gap-3 mb-1">
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Tên Khách</label>
-                            <input type="text" id="mua-ten" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-indigo-500 focus:bg-white transition">
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Tên Khách</label>
+                            <input type="text" id="mua-ten" required class="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">SĐT</label>
-                            <input type="tel" id="mua-sdt" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-indigo-500 focus:bg-white transition">
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">SĐT</label>
+                            <input type="tel" id="mua-sdt" required class="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
                         </div>
                     </div>
 
-                    <div class="pt-1 border-t border-slate-50">
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1 flex justify-between items-center">
+                    <div class="pt-2 border-t border-slate-100">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 flex justify-between items-center">
                             <span>Sản phẩm</span>
-                            <button type="button" onclick="addShoeRow()" class="text-indigo-600 hover:text-indigo-800 flex items-center space-x-0.5 bg-indigo-50 px-1.5 py-0.5 rounded">
-                                <i data-lucide="plus" class="w-3 h-3"></i><span>Thêm đôi nữa</span>
+                            <button type="button" onclick="addShoeRow()" class="text-indigo-600 hover:text-indigo-800 flex items-center space-x-1 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 rounded-lg transition">
+                                <i data-lucide="plus" class="w-3 h-3"></i><span class="text-xs font-bold">Thêm đôi</span>
                             </button>
                         </label>
                         
-                        <div id="shoe-container" class="space-y-2">
+                        <div id="shoe-container" class="space-y-2.5">
                             <!-- Dòng nhập giày đầu tiên -->
                             <div class="flex space-x-2 shoe-row">
-                                <input type="text" placeholder="Tên giày + size..." required class="shoe-name flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-indigo-500 focus:bg-white transition">
-                                <input type="number" placeholder="Giá (Vd 500)" required onblur="handlePriceBlur(this)" class="shoe-price w-24 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold text-indigo-600 focus:ring-1 focus:ring-indigo-500 focus:bg-white transition">
+                                <input type="text" placeholder="Tên giày + size..." required class="shoe-name flex-1 px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                                <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this)" class="shoe-price w-28 shrink-0 px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-black text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-right">
                             </div>
                         </div>
                     </div>
                     
                     <div class="pt-2">
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Hình Thức Thanh Toán</label>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Hình Thức Thanh Toán</label>
                         <div class="flex space-x-2 bg-slate-100 p-1 rounded-xl">
-                            <button type="button" id="btn-pay-cash" onclick="selectPayment('Tiền mặt')" class="flex-1 py-1.5 bg-white shadow-sm text-indigo-600 rounded-lg text-xs font-bold transition">Tiền mặt</button>
-                            <button type="button" id="btn-pay-bank" onclick="selectPayment('Chuyển khoản')" class="flex-1 py-1.5 text-slate-500 rounded-lg text-xs font-bold transition">Chuyển khoản</button>
+                            <button type="button" id="btn-pay-cash" onclick="selectPayment('Tiền mặt')" class="flex-1 py-2 bg-white shadow-sm text-indigo-600 rounded-lg text-xs font-bold transition">Tiền mặt</button>
+                            <button type="button" id="btn-pay-bank" onclick="selectPayment('Chuyển khoản')" class="flex-1 py-2 text-slate-500 rounded-lg text-xs font-bold transition hover:text-slate-700">Chuyển khoản</button>
                         </div>
                     </div>
 
-                    <div class="space-y-2 pt-2">
-                        <label class="flex flex-col border border-slate-200 rounded-lg p-2.5 cursor-pointer hover:bg-slate-50 transition relative overflow-hidden group">
-                            <span class="text-[11px] font-bold text-slate-700 mb-1 flex items-center space-x-1"><i data-lucide="image" class="w-3.5 h-3.5"></i><span>Tải Ảnh Đôi Giày</span></span>
-                            <input type="file" id="mua-anhgiay" accept="image/*" onchange="previewImage(this, 'mua-preview-giay')" class="text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100">
-                            <div id="mua-preview-giay" class="hidden mt-2 w-full aspect-[4/3] rounded-lg bg-cover bg-center border border-slate-200"></div>
+                    <div class="space-y-3 pt-3">
+                        <label class="relative flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-2xl h-32 cursor-pointer bg-slate-50/50 hover:bg-indigo-50 hover:border-indigo-300 transition overflow-hidden group">
+                            <input type="file" id="mua-anhgiay" class="absolute inset-0 opacity-0 cursor-pointer z-20" accept="image/*" onchange="previewImage(this, 'mua-preview-giay')">
+                            <div class="flex flex-col items-center justify-center space-y-2 pointer-events-none text-slate-400 group-hover:text-indigo-500 transition">
+                                <div class="bg-white p-2 rounded-full shadow-sm group-hover:scale-110 transition duration-300"><i data-lucide="image-plus" class="w-5 h-5 text-indigo-500"></i></div>
+                                <span class="text-xs font-bold">Chạm tải ảnh giày</span>
+                            </div>
+                            <div id="mua-preview-giay" class="hidden absolute inset-0 z-10 w-full h-full bg-cover bg-center"></div>
                         </label>
 
                         <!-- Chỉ hiện khi chọn Chuyển khoản -->
-                        <label id="wrap-mua-bill" class="hidden flex flex-col border border-slate-200 rounded-lg p-2.5 cursor-pointer hover:bg-slate-50 transition relative overflow-hidden group">
-                            <span class="text-[11px] font-bold text-slate-700 mb-1 flex items-center space-x-1"><i data-lucide="receipt" class="w-3.5 h-3.5"></i><span>Tải Ảnh Bill CK</span></span>
-                            <input type="file" id="mua-anhbill" accept="image/*" onchange="previewImage(this, 'mua-preview-bill')" class="text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100">
-                            <div id="mua-preview-bill" class="hidden mt-2 w-full aspect-[4/3] rounded-lg bg-cover bg-center border border-slate-200"></div>
+                        <label id="wrap-mua-bill" class="hidden relative flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-2xl h-32 cursor-pointer bg-slate-50/50 hover:bg-indigo-50 hover:border-indigo-300 transition overflow-hidden group">
+                            <input type="file" id="mua-anhbill" class="absolute inset-0 opacity-0 cursor-pointer z-20" accept="image/*" onchange="previewImage(this, 'mua-preview-bill')">
+                            <div class="flex flex-col items-center justify-center space-y-2 pointer-events-none text-slate-400 group-hover:text-indigo-500 transition">
+                                <div class="bg-white p-2 rounded-full shadow-sm group-hover:scale-110 transition duration-300"><i data-lucide="receipt" class="w-5 h-5 text-indigo-500"></i></div>
+                                <span class="text-xs font-bold">Chạm tải Bill CK</span>
+                            </div>
+                            <div id="mua-preview-bill" class="hidden absolute inset-0 z-10 w-full h-full bg-cover bg-center"></div>
                         </label>
                     </div>
 
@@ -188,39 +194,40 @@
                     <i data-lucide="waves" class="w-5 h-5 text-cyan-600"></i>
                     <h2 class="text-base font-bold text-slate-900">Tạo Đơn Giặt Giày</h2>
                 </div>
-                <form id="form-giat" onsubmit="submitGiatGiay(event)" class="space-y-3">
-                    <div class="grid grid-cols-2 gap-2.5">
+                <form id="form-giat" onsubmit="submitGiatGiay(event)" class="space-y-4">
+                    <div class="grid grid-cols-2 gap-3 mb-1">
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Tên Khách</label>
-                            <input type="text" id="giat-ten" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-cyan-500 focus:bg-white transition">
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Tên Khách</label>
+                            <input type="text" id="giat-ten" required class="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 focus:bg-white transition">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">SĐT</label>
-                            <input type="tel" id="giat-sdt" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-cyan-500 focus:bg-white transition">
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">SĐT</label>
+                            <input type="tel" id="giat-sdt" required class="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 focus:bg-white transition">
                         </div>
                     </div>
                     
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Dịch vụ yêu cầu</label>
-                        <!-- Giá trị mặc định là Giặt -->
-                        <input type="text" id="giat-dichvu" value="Giặt" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-cyan-500 focus:bg-white transition font-semibold text-cyan-700">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Dịch vụ yêu cầu</label>
+                        <input type="text" id="giat-dichvu" value="Giặt" required class="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 focus:bg-white transition font-bold text-cyan-700">
                     </div>
 
-                    <label class="flex flex-col border border-slate-200 rounded-lg p-2.5 cursor-pointer hover:bg-slate-50 transition relative overflow-hidden group">
-                        <span class="text-[11px] font-bold text-slate-700 mb-1 flex items-center space-x-1"><i data-lucide="camera" class="w-3.5 h-3.5"></i><span>Chụp Ảnh Tình Trạng Giày</span></span>
-                        <input type="file" id="giat-anhgiay" accept="image/*" onchange="previewImage(this, 'giat-preview-giay')" class="text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-cyan-50 file:text-cyan-600 hover:file:bg-cyan-100">
-                        <div id="giat-preview-giay" class="hidden mt-2 w-full aspect-[4/3] rounded-lg bg-cover bg-center border border-slate-200"></div>
+                    <label class="relative flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-2xl h-32 cursor-pointer bg-slate-50/50 hover:bg-cyan-50 hover:border-cyan-300 transition overflow-hidden group mt-2">
+                        <input type="file" id="giat-anhgiay" class="absolute inset-0 opacity-0 cursor-pointer z-20" accept="image/*" onchange="previewImage(this, 'giat-preview-giay')">
+                        <div class="flex flex-col items-center justify-center space-y-2 pointer-events-none text-slate-400 group-hover:text-cyan-500 transition">
+                            <div class="bg-white p-2 rounded-full shadow-sm group-hover:scale-110 transition duration-300"><i data-lucide="camera" class="w-5 h-5 text-cyan-500"></i></div>
+                            <span class="text-xs font-bold">Chạm chụp tình trạng</span>
+                        </div>
+                        <div id="giat-preview-giay" class="hidden absolute inset-0 z-10 w-full h-full bg-cover bg-center"></div>
                     </label>
 
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Thanh Toán</label>
-                        <select id="giat-thanhtoan" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-cyan-500 focus:bg-white font-semibold">
+                    <div class="pt-2">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Trạng Thái Thanh Toán</label>
+                        <select id="giat-thanhtoan" class="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 focus:bg-white font-bold text-slate-700 transition">
                             <option value="Chưa thanh toán">Chưa thanh toán</option>
                             <option value="Cọc">Đã cọc</option>
                             <option value="Đã thanh toán">Đã thanh toán</option>
                         </select>
                     </div>
-                    <!-- Đã gỡ bỏ ô chọn Trạng thái xử lý -->
 
                     <button type="submit" id="btn-submit-giat" class="w-full py-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl font-bold shadow-md shadow-cyan-200 flex items-center justify-center space-x-2 transition mt-4">
                         <i data-lucide="check-circle" class="w-5 h-5"></i>
@@ -318,14 +325,14 @@
             const wrapBill = document.getElementById('wrap-mua-bill');
 
             if (method === 'Tiền mặt') {
-                btnCash.className = "flex-1 py-1.5 bg-white shadow-sm text-indigo-600 rounded-lg text-xs font-bold transition";
-                btnBank.className = "flex-1 py-1.5 text-slate-500 rounded-lg text-xs font-bold transition";
+                btnCash.className = "flex-1 py-2 bg-white shadow-sm text-indigo-600 rounded-lg text-xs font-bold transition";
+                btnBank.className = "flex-1 py-2 text-slate-500 rounded-lg text-xs font-bold transition hover:text-slate-700";
                 wrapBill.classList.add('hidden');
                 document.getElementById('mua-anhbill').value = ''; 
                 document.getElementById('mua-preview-bill').classList.add('hidden');
             } else {
-                btnBank.className = "flex-1 py-1.5 bg-white shadow-sm text-indigo-600 rounded-lg text-xs font-bold transition";
-                btnCash.className = "flex-1 py-1.5 text-slate-500 rounded-lg text-xs font-bold transition";
+                btnBank.className = "flex-1 py-2 bg-white shadow-sm text-indigo-600 rounded-lg text-xs font-bold transition";
+                btnCash.className = "flex-1 py-2 text-slate-500 rounded-lg text-xs font-bold transition hover:text-slate-700";
                 wrapBill.classList.remove('hidden');
             }
         }
@@ -334,11 +341,11 @@
         function addShoeRow() {
             const container = document.getElementById('shoe-container');
             const row = document.createElement('div');
-            row.className = "flex space-x-2 shoe-row mt-2 items-center animate-in fade-in";
+            row.className = "flex space-x-2 shoe-row mt-2.5 items-center animate-in fade-in";
             row.innerHTML = `
-                <input type="text" placeholder="Tên giày + size..." required class="shoe-name flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-indigo-500 focus:bg-white transition">
-                <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this)" class="shoe-price w-24 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold text-indigo-600 focus:ring-1 focus:ring-indigo-500 focus:bg-white transition">
-                <button type="button" onclick="this.parentElement.remove()" class="p-1.5 text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition"><i data-lucide="minus" class="w-4 h-4"></i></button>
+                <input type="text" placeholder="Tên giày + size..." required class="shoe-name flex-1 px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this)" class="shoe-price w-28 shrink-0 px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-black text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-right">
+                <button type="button" onclick="this.parentElement.remove()" class="p-2.5 text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
             `;
             container.appendChild(row);
             lucide.createIcons();
@@ -522,8 +529,8 @@
                 const container = document.getElementById('shoe-container');
                 container.innerHTML = `
                     <div class="flex space-x-2 shoe-row">
-                        <input type="text" placeholder="Tên giày + size..." required class="shoe-name flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-indigo-500 focus:bg-white transition">
-                        <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this)" class="shoe-price w-24 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold text-indigo-600 focus:ring-1 focus:ring-indigo-500 focus:bg-white transition">
+                        <input type="text" placeholder="Tên giày + size..." required class="shoe-name flex-1 px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                        <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this)" class="shoe-price w-28 shrink-0 px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-black text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-right">
                     </div>`;
                 
                 selectPayment('Tiền mặt'); // Reset nút TT
