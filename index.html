@@ -51,10 +51,10 @@
             </div>
             <div>
                 <h1 class="text-base md:text-lg font-black tracking-wide leading-tight">Tiệm Giày Cũ Bình Dương</h1>
-                <p class="text-[10px] text-indigo-100 font-medium">Hệ thống đơn hàng • <span class="font-bold text-white bg-indigo-500/50 px-1 py-0.5 rounded">WIFI: 0378155320</span></p>
+                <p class="text-[10px] text-indigo-100 font-medium">Hệ thống đơn hàng • <span class="font-bold text-white bg-indigo-500/50 px-1.5 py-0.5 rounded">WIFI: 0378155320</span></p>
             </div>
         </div>
-        <button onclick="fetchDataFromBaserow()" class="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition shrink-0">
+        <button onclick="fetchDataFromBaserow()" class="p-2.5 bg-white/10 hover:bg-white/20 rounded-xl transition shrink-0">
             <i data-lucide="refresh-cw" class="w-5 h-5"></i>
         </button>
     </header>
@@ -85,11 +85,11 @@
     <!-- MAIN CONTENT AREA -->
     <main class="flex-1 overflow-y-auto bg-slate-50 relative">
         
-        <!-- SECTION: TRA CỨU (MẶC ĐỊNH BẬT) -->
-        <section id="section-tra-cuu" class="p-4 space-y-4 max-w-xl mx-auto block animate-in fade-in duration-200">
+        <!-- ==================== TRA CỨU ==================== -->
+        <section id="section-tra-cuu" class="p-3 md:p-4 space-y-4 max-w-xl mx-auto block animate-in fade-in duration-200">
             <div class="flex items-center space-x-2 text-indigo-600">
                 <i data-lucide="search" class="w-5 h-5"></i>
-                <h2 class="text-lg font-bold text-slate-900">Tra Cứu Nhanh</h2>
+                <h2 class="text-base font-bold text-slate-900">Tra Cứu Nhanh</h2>
             </div>
             
             <div class="relative">
@@ -99,7 +99,7 @@
                     <i data-lucide="x-circle" class="w-5 h-5"></i>
                 </button>
             </div>
-            <button onclick="executeSearch()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl font-bold transition flex items-center justify-center space-x-2">
+            <button onclick="executeSearch()" class="w-full py-3 bg-slate-800 hover:bg-slate-900 text-white rounded-xl font-bold transition flex items-center justify-center space-x-2 shadow-sm">
                 <i data-lucide="search" class="w-4 h-4"></i><span>Tìm Kiếm</span>
             </button>
             
@@ -108,7 +108,7 @@
             </div>
         </section>
 
-        <!-- SECTION: TẠO ĐƠN MUA GIÀY -->
+        <!-- ==================== MUA GIÀY ==================== -->
         <section id="section-mua-giay" class="p-3 md:p-4 max-w-xl mx-auto hidden animate-in fade-in duration-200">
             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4">
                 <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
@@ -125,11 +125,11 @@
                     <div class="grid grid-cols-2 gap-3 mb-1">
                         <div>
                             <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Tên Khách</label>
-                            <input type="text" id="mua-ten" required class="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                            <input type="text" id="mua-ten" required class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">SĐT</label>
-                            <input type="tel" id="mua-sdt" required class="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                            <input type="tel" id="mua-sdt" required class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
                         </div>
                     </div>
 
@@ -142,44 +142,48 @@
                         </label>
                         
                         <div id="shoe-container" class="space-y-2.5">
-                            <!-- Dòng nhập giày đầu tiên -->
                             <div class="flex space-x-2 shoe-row">
-                                <input type="text" placeholder="Tên giày + size..." required class="shoe-name flex-1 px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
-                                <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this)" class="shoe-price w-28 shrink-0 px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-black text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-right">
+                                <input type="text" value="Giày Sneaker" required class="shoe-name flex-1 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                                <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this); calculateTotal()" onkeyup="calculateTotal()" class="shoe-price flex-1 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-black text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-right">
                             </div>
+                        </div>
+
+                        <!-- Vùng hiển thị tự động tổng tiền -->
+                        <div id="total-price-display" class="hidden flex justify-between items-center py-2.5 px-4 mt-3 bg-indigo-50 rounded-xl border border-indigo-100">
+                            <span class="text-xs font-bold text-indigo-800 uppercase tracking-wider">Tổng cộng:</span>
+                            <span id="total-price-value" class="text-lg font-black text-indigo-600">0đ</span>
                         </div>
                     </div>
                     
                     <div class="pt-2">
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Hình Thức Thanh Toán</label>
-                        <div class="flex space-x-2 bg-slate-100 p-1 rounded-xl">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Thanh Toán</label>
+                        <div class="flex space-x-2 bg-slate-100 p-1.5 rounded-xl">
                             <button type="button" id="btn-pay-cash" onclick="selectPayment('Tiền mặt')" class="flex-1 py-2 bg-white shadow-sm text-indigo-600 rounded-lg text-xs font-bold transition">Tiền mặt</button>
                             <button type="button" id="btn-pay-bank" onclick="selectPayment('Chuyển khoản')" class="flex-1 py-2 text-slate-500 rounded-lg text-xs font-bold transition hover:text-slate-700">Chuyển khoản</button>
                         </div>
                     </div>
 
                     <div class="space-y-3 pt-3">
-                        <label class="relative flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-2xl h-32 cursor-pointer bg-slate-50/50 hover:bg-indigo-50 hover:border-indigo-300 transition overflow-hidden group">
+                        <label class="relative flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-2xl h-36 cursor-pointer bg-slate-50/50 hover:bg-indigo-50 hover:border-indigo-300 transition overflow-hidden group">
                             <input type="file" id="mua-anhgiay" class="absolute inset-0 opacity-0 cursor-pointer z-20" accept="image/*" onchange="previewImage(this, 'mua-preview-giay')">
                             <div class="flex flex-col items-center justify-center space-y-2 pointer-events-none text-slate-400 group-hover:text-indigo-500 transition">
-                                <div class="bg-white p-2 rounded-full shadow-sm group-hover:scale-110 transition duration-300"><i data-lucide="image-plus" class="w-5 h-5 text-indigo-500"></i></div>
+                                <div class="bg-white p-3 rounded-2xl shadow-sm group-hover:scale-110 transition duration-300"><i data-lucide="image-plus" class="w-6 h-6 text-indigo-500"></i></div>
                                 <span class="text-xs font-bold">Chạm tải ảnh giày</span>
                             </div>
                             <div id="mua-preview-giay" class="hidden absolute inset-0 z-10 w-full h-full bg-cover bg-center"></div>
                         </label>
 
-                        <!-- Chỉ hiện khi chọn Chuyển khoản -->
-                        <label id="wrap-mua-bill" class="hidden relative flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-2xl h-32 cursor-pointer bg-slate-50/50 hover:bg-indigo-50 hover:border-indigo-300 transition overflow-hidden group">
+                        <label id="wrap-mua-bill" class="hidden relative flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-2xl h-36 cursor-pointer bg-slate-50/50 hover:bg-indigo-50 hover:border-indigo-300 transition overflow-hidden group">
                             <input type="file" id="mua-anhbill" class="absolute inset-0 opacity-0 cursor-pointer z-20" accept="image/*" onchange="previewImage(this, 'mua-preview-bill')">
                             <div class="flex flex-col items-center justify-center space-y-2 pointer-events-none text-slate-400 group-hover:text-indigo-500 transition">
-                                <div class="bg-white p-2 rounded-full shadow-sm group-hover:scale-110 transition duration-300"><i data-lucide="receipt" class="w-5 h-5 text-indigo-500"></i></div>
+                                <div class="bg-white p-3 rounded-2xl shadow-sm group-hover:scale-110 transition duration-300"><i data-lucide="receipt" class="w-6 h-6 text-indigo-500"></i></div>
                                 <span class="text-xs font-bold">Chạm tải Bill CK</span>
                             </div>
                             <div id="mua-preview-bill" class="hidden absolute inset-0 z-10 w-full h-full bg-cover bg-center"></div>
                         </label>
                     </div>
 
-                    <button type="submit" id="btn-submit-mua" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-md shadow-indigo-200 flex items-center justify-center space-x-2 transition mt-4">
+                    <button type="submit" id="btn-submit-mua" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-md shadow-indigo-200 flex items-center justify-center space-x-2 transition mt-4">
                         <i data-lucide="check-circle" class="w-5 h-5"></i>
                         <span>Xác Nhận Chốt Đơn</span>
                     </button>
@@ -187,7 +191,7 @@
             </div>
         </section>
 
-        <!-- SECTION: TẠO ĐƠN GIẶT GIÀY -->
+        <!-- ==================== GIẶT GIÀY ==================== -->
         <section id="section-giat-giay" class="p-3 md:p-4 max-w-xl mx-auto hidden animate-in fade-in duration-200">
             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4">
                 <div class="flex items-center space-x-2 mb-4 pb-3 border-b border-slate-100">
@@ -198,23 +202,23 @@
                     <div class="grid grid-cols-2 gap-3 mb-1">
                         <div>
                             <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Tên Khách</label>
-                            <input type="text" id="giat-ten" required class="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 focus:bg-white transition">
+                            <input type="text" id="giat-ten" required class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 focus:bg-white transition">
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">SĐT</label>
-                            <input type="tel" id="giat-sdt" required class="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 focus:bg-white transition">
+                            <input type="tel" id="giat-sdt" required class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 focus:bg-white transition">
                         </div>
                     </div>
                     
                     <div>
                         <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Dịch vụ yêu cầu</label>
-                        <input type="text" id="giat-dichvu" value="Giặt" required class="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 focus:bg-white transition font-bold text-cyan-700">
+                        <input type="text" id="giat-dichvu" value="Giặt + " required class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 focus:bg-white transition font-bold text-cyan-700">
                     </div>
 
-                    <label class="relative flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-2xl h-32 cursor-pointer bg-slate-50/50 hover:bg-cyan-50 hover:border-cyan-300 transition overflow-hidden group mt-2">
+                    <label class="relative flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-2xl h-36 cursor-pointer bg-slate-50/50 hover:bg-cyan-50 hover:border-cyan-300 transition overflow-hidden group mt-2">
                         <input type="file" id="giat-anhgiay" class="absolute inset-0 opacity-0 cursor-pointer z-20" accept="image/*" onchange="previewImage(this, 'giat-preview-giay')">
                         <div class="flex flex-col items-center justify-center space-y-2 pointer-events-none text-slate-400 group-hover:text-cyan-500 transition">
-                            <div class="bg-white p-2 rounded-full shadow-sm group-hover:scale-110 transition duration-300"><i data-lucide="camera" class="w-5 h-5 text-cyan-500"></i></div>
+                            <div class="bg-white p-3 rounded-2xl shadow-sm group-hover:scale-110 transition duration-300"><i data-lucide="camera" class="w-6 h-6 text-cyan-500"></i></div>
                             <span class="text-xs font-bold">Chạm chụp tình trạng</span>
                         </div>
                         <div id="giat-preview-giay" class="hidden absolute inset-0 z-10 w-full h-full bg-cover bg-center"></div>
@@ -222,14 +226,14 @@
 
                     <div class="pt-2">
                         <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Trạng Thái Thanh Toán</label>
-                        <select id="giat-thanhtoan" class="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 focus:bg-white font-bold text-slate-700 transition">
+                        <select id="giat-thanhtoan" class="w-full px-3 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 focus:bg-white font-bold text-slate-700 transition">
                             <option value="Chưa thanh toán">Chưa thanh toán</option>
                             <option value="Cọc">Đã cọc</option>
                             <option value="Đã thanh toán">Đã thanh toán</option>
                         </select>
                     </div>
 
-                    <button type="submit" id="btn-submit-giat" class="w-full py-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl font-bold shadow-md shadow-cyan-200 flex items-center justify-center space-x-2 transition mt-4">
+                    <button type="submit" id="btn-submit-giat" class="w-full py-3.5 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl font-bold shadow-md shadow-cyan-200 flex items-center justify-center space-x-2 transition mt-4">
                         <i data-lucide="check-circle" class="w-5 h-5"></i>
                         <span>Nhận Giày Giặt</span>
                     </button>
@@ -237,18 +241,18 @@
             </div>
         </section>
 
-        <!-- SECTION: LỊCH SỬ -->
+        <!-- ==================== LỊCH SỬ ==================== -->
         <section id="section-lich-su" class="p-4 space-y-4 max-w-xl mx-auto hidden animate-in fade-in duration-200">
             <div class="flex items-center justify-between">
-                <h2 class="text-lg font-bold text-slate-950 flex flex-col">
+                <h2 class="text-base font-bold text-slate-950 flex flex-col">
                     <span class="flex items-center space-x-2">
                         <i data-lucide="history" class="w-5 h-5 text-indigo-600"></i>
                         <span>Lịch Sử</span>
                     </span>
-                    <span class="text-[10px] text-slate-400 font-medium ml-7">(Mua: 3 ngày gần nhất | Giặt: Tất cả)</span>
+                    <span class="text-[9px] text-slate-400 font-medium ml-7 uppercase">(Mua: 3 ngày gần nhất | Giặt: Tất cả)</span>
                 </h2>
                 
-                <div class="flex space-x-1 bg-slate-200 p-1 rounded-xl text-xs font-semibold">
+                <div class="flex space-x-1 bg-slate-200 p-1 rounded-xl text-xs font-semibold shrink-0">
                     <button id="btn-hist-tat-ca" onclick="filterHistory('tat-ca')" class="px-3 py-1.5 rounded-lg bg-white shadow-sm text-indigo-600 transition">Tất cả</button>
                     <button id="btn-hist-mua" onclick="filterHistory('mua')" class="px-3 py-1.5 rounded-lg text-slate-600 transition">Mua</button>
                     <button id="btn-hist-giat" onclick="filterHistory('giat')" class="px-3 py-1.5 rounded-lg text-slate-600 transition">Giặt</button>
@@ -256,7 +260,7 @@
             </div>
             
             <div id="history-list" class="space-y-3 pb-8">
-                <!-- Nội dung lịch sử render bằng JS -->
+                <!-- Nội dung lịch sử -->
             </div>
         </section>
         
@@ -297,27 +301,40 @@
         const DB_CONFIG = {
             token: 'NiWMS76P9sn2yP76BS53dgiikbc76utz',
             tableMua: '1012082',
-            tableGiat: '1012088'
+            tableGiat: '1012088',
+            telegramToken: '8965725827:AAHfHSqjLAmspcMVRayZI8buJVN6MNJMEqs',
+            telegramChat: '8511070091'
         };
 
         let dataStore = { muaGiay: [], giatGiay: [] };
-        let currentPaymentMethod = 'Tiền mặt'; // Mặc định trạng thái thanh toán
+        let currentPaymentMethod = 'Tiền mặt'; 
+        let shoeCounter = 1;
 
         window.onload = function() {
             lucide.createIcons();
             fetchDataFromBaserow();
-            // Khởi tạo tab mặc định là Tra cứu
-            switchTab('tra-cuu');
+            switchTab('tra-cuu'); // Tab mặc định là Tra cứu
         };
 
-        // Utility: Ẩn Danh
+        // Gửi thông báo Telegram
+        async function sendTelegram(text) {
+            if(!DB_CONFIG.telegramToken || !DB_CONFIG.telegramChat) return;
+            const url = `https://api.telegram.org/bot${DB_CONFIG.telegramToken}/sendMessage`;
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ chat_id: DB_CONFIG.telegramChat, text: text, parse_mode: 'HTML' })
+                });
+            } catch (e) { console.error("Lỗi Telegram:", e); }
+        }
+
         function fillAnonymous() {
             document.getElementById('mua-ten').value = "Khách vãng lai";
             document.getElementById('mua-sdt').value = "0000000000";
             showToast("Đã điền thông tin ẩn danh", "success");
         }
 
-        // Utility: Chuyển đổi Nút Thanh toán
         function selectPayment(method) {
             currentPaymentMethod = method;
             const btnCash = document.getElementById('btn-pay-cash');
@@ -337,21 +354,21 @@
             }
         }
 
-        // Utility: Thêm ô nhập Giày
         function addShoeRow() {
+            shoeCounter++;
             const container = document.getElementById('shoe-container');
             const row = document.createElement('div');
             row.className = "flex space-x-2 shoe-row mt-2.5 items-center animate-in fade-in";
             row.innerHTML = `
-                <input type="text" placeholder="Tên giày + size..." required class="shoe-name flex-1 px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
-                <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this)" class="shoe-price w-28 shrink-0 px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-black text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-right">
-                <button type="button" onclick="this.parentElement.remove()" class="p-2.5 text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                <input type="text" value="Giày Sneaker ${shoeCounter}" required class="shoe-name flex-1 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this); calculateTotal()" onkeyup="calculateTotal()" class="shoe-price flex-1 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-black text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-right">
+                <button type="button" onclick="this.parentElement.remove(); calculateTotal();" class="p-2.5 text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
             `;
             container.appendChild(row);
             lucide.createIcons();
+            calculateTotal();
         }
 
-        // Utility: Copy Text
         function copySdt(e, sdt) {
             if (e) e.stopPropagation();
             const el = document.createElement('textarea');
@@ -363,7 +380,6 @@
             showToast('Đã copy SĐT: ' + sdt, 'success');
         }
 
-        // Tự động x1000 cho giá
         function handlePriceBlur(input) {
             let val = parseInt(input.value) || 0;
             if (val > 0 && val < 10000) {
@@ -371,7 +387,23 @@
             }
         }
 
-        // Tải nhiều trang & Vá lỗi Failed to fetch
+        function calculateTotal() {
+            let total = 0;
+            document.querySelectorAll('.shoe-price').forEach(inp => {
+                let v = parseInt(inp.value) || 0;
+                if(v > 0 && v < 10000) v *= 1000; // Tạm tính ngầm cho phần hiển thị
+                total += v;
+            });
+            const display = document.getElementById('total-price-display');
+            const val = document.getElementById('total-price-value');
+            if (total > 0) {
+                display.classList.remove('hidden');
+                val.innerText = formatMoney(total);
+            } else {
+                display.classList.add('hidden');
+            }
+        }
+
         async function fetchAllPages(url) {
             let results = []; 
             let nextUrl = url;
@@ -388,14 +420,13 @@
             return results;
         }
 
-        // Lấy dữ liệu & TỰ DỌN RÁC SAU 3 NGÀY NGẦM
+        // TỰ ĐỘNG XÓA ĐƠN MUA CŨ SAU 3 NGÀY
         async function fetchDataFromBaserow() {
             document.getElementById('global-loading').style.display = 'flex';
             try {
                 const giatRes = await fetchAllPages(`https://api.baserow.io/api/database/rows/table/${DB_CONFIG.tableGiat}/?user_field_names=true`);
                 const muaRes = await fetchAllPages(`https://api.baserow.io/api/database/rows/table/${DB_CONFIG.tableMua}/?user_field_names=true`);
 
-                // ⚡ AUTO-DELETE LÃO HÓA > 3 NGÀY CHO MUA GIÀY
                 const now = new Date();
                 const threeDaysAgo = new Date(now.getTime() - (3 * 24 * 60 * 60 * 1000));
                 
@@ -446,7 +477,6 @@
             }
         }
 
-        // TẠO ĐƠN MUA & BẮN SANG FIREBASE
         async function submitMuaGiay(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-submit-mua');
@@ -455,17 +485,13 @@
             btn.innerHTML = `<i data-lucide="loader" class="w-5 h-5 animate-spin"></i><span>Đang tải lên...</span>`;
             lucide.createIcons();
 
-            // Lấy danh sách tên giày và tổng tiền
             let shoeNames = [];
             let totalVal = 0;
             document.querySelectorAll('.shoe-row').forEach(row => {
                 let n = row.querySelector('.shoe-name').value.trim();
                 let p = parseInt(row.querySelector('.shoe-price').value) || 0;
                 if (p > 0 && p < 10000) p *= 1000;
-                if (n) {
-                    shoeNames.push(n);
-                    totalVal += p;
-                }
+                if (n) { shoeNames.push(n); totalVal += p; }
             });
 
             if(shoeNames.length === 0) {
@@ -498,7 +524,7 @@
                     if (tokenBill) payload["Link ảnh Bill"] = [{"name": tokenBill}];
                 }
 
-                // 1. Lưu Baserow
+                // Lưu Baserow
                 const res = await fetch(`https://api.baserow.io/api/database/rows/table/${DB_CONFIG.tableMua}/?user_field_names=true`, {
                     method: 'POST',
                     headers: { 'Authorization': `Token ${DB_CONFIG.token}`, 'Content-Type': 'application/json' },
@@ -506,7 +532,7 @@
                 });
                 if (!res.ok) throw new Error("Lỗi Baserow");
 
-                // 2. Bắn Doanh Thu sang Firebase
+                // Bắn Firebase Doanh thu
                 if (window.firebaseDb && window.fbAddDoc && window.fbCollection) {
                     await window.fbAddDoc(window.fbCollection(window.firebaseDb, "doanhthu"), {
                         tenGiay: payload["Tên giày"],
@@ -515,6 +541,10 @@
                         thoiGian: payload["Thời gian"]
                     });
                 }
+
+                // Gửi Telegram
+                const teleMsg = `💰 <b>CÓ ĐƠN BÁN GIÀY MỚI</b>\n👤 Khách: ${payload["Tên khách"]}\n📞 SĐT: ${payload["Số điện thoại"]}\n👟 Sản phẩm: ${payload["Tên giày"]}\n💵 Tổng tiền: <b>${formatMoney(payload["Giá bán"])}</b> (${payload["Hình thức"]})`;
+                sendTelegram(teleMsg);
 
                 showToast("Chốt đơn thành công!", "success");
                 
@@ -525,15 +555,16 @@
                 document.getElementById('mua-preview-bill').style.backgroundImage = "";
                 document.getElementById('mua-preview-bill').classList.add('hidden');
                 
-                // Trả về mặc định 1 dòng nhập giày
+                shoeCounter = 1;
                 const container = document.getElementById('shoe-container');
                 container.innerHTML = `
                     <div class="flex space-x-2 shoe-row">
-                        <input type="text" placeholder="Tên giày + size..." required class="shoe-name flex-1 px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
-                        <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this)" class="shoe-price w-28 shrink-0 px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-black text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-right">
+                        <input type="text" value="Giày Sneaker" required class="shoe-name flex-1 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                        <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this); calculateTotal()" onkeyup="calculateTotal()" class="shoe-price flex-1 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-black text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-right">
                     </div>`;
                 
-                selectPayment('Tiền mặt'); // Reset nút TT
+                document.getElementById('total-price-display').classList.add('hidden');
+                selectPayment('Tiền mặt');
                 await fetchDataFromBaserow();
                 switchTab('lich-su');
             } catch (err) {
@@ -546,7 +577,6 @@
             }
         }
 
-        // TẠO ĐƠN GIẶT
         async function submitGiatGiay(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-submit-giat');
@@ -560,7 +590,7 @@
                 "Số điện thoại": document.getElementById('giat-sdt').value.trim(),
                 "Dịch vụ": document.getElementById('giat-dichvu').value.trim(),
                 "Trạng thái thanh toán": document.getElementById('giat-thanhtoan').value,
-                "Trạng thái xử lý": "Đang xử lý", // Mặc định tự động điền luôn
+                "Trạng thái xử lý": "Đang xử lý",
                 "Thời gian": new Date().toISOString()
             };
 
@@ -580,9 +610,13 @@
 
                 if (!res.ok) throw new Error("Lỗi lưu đơn giặt");
 
+                // Gửi Telegram
+                const teleMsg = `🫧 <b>CÓ ĐƠN GIẶT GIÀY MỚI</b>\n👤 Khách: ${payload["Tên khách hàng"]}\n📞 SĐT: ${payload["Số điện thoại"]}\n🏷️ Dịch vụ: ${payload["Dịch vụ"]}\n💵 Thanh toán: ${payload["Trạng thái thanh toán"]}`;
+                sendTelegram(teleMsg);
+
                 showToast("Nhận đơn giặt thành công!", "success");
                 document.getElementById('form-giat').reset();
-                document.getElementById('giat-dichvu').value = "Giặt"; // Reset lại chữ Giặt
+                document.getElementById('giat-dichvu').value = "Giặt + "; 
                 document.getElementById('giat-preview-giay').style.backgroundImage = "";
                 document.getElementById('giat-preview-giay').classList.add('hidden');
                 
@@ -616,38 +650,22 @@
             }
         }
 
-        // LỊCH SỬ THÔNG MINH
         let currentHistFilter = 'tat-ca';
         function filterHistory(type) {
             currentHistFilter = type;
-            ['tat-ca', 'mua', 'giat'].forEach(k => { 
-                document.getElementById(`btn-hist-${k}`).className = k === type ? "px-3 py-1.5 rounded-lg bg-white shadow-sm text-indigo-600 transition" : "px-3 py-1.5 rounded-lg text-slate-600 transition"; 
-            });
+            ['tat-ca', 'mua', 'giat'].forEach(k => { document.getElementById(`btn-hist-${k}`).className = k === type ? "px-3 py-1.5 rounded-lg bg-white shadow-sm text-indigo-600 transition" : "px-3 py-1.5 rounded-lg text-slate-600 transition"; });
             renderHistoryList();
         }
 
         function renderHistoryList() {
-            const listContainer = document.getElementById('history-list'); 
-            listContainer.innerHTML = ""; 
-            let list = [];
-            
-            if (currentHistFilter === 'tat-ca' || currentHistFilter === 'mua') { 
-                dataStore.muaGiay.forEach(m => list.push({ ...m, filterType: 'mua', sortDate: new Date(m.thoiGian) })); 
-            }
-            if (currentHistFilter === 'tat-ca' || currentHistFilter === 'giat') { 
-                dataStore.giatGiay.forEach(g => list.push({ ...g, filterType: 'giat', sortDate: new Date(g.thoiGian) })); 
-            }
-            
+            const listContainer = document.getElementById('history-list'); listContainer.innerHTML = ""; let list = [];
+            if (currentHistFilter === 'tat-ca' || currentHistFilter === 'mua') { dataStore.muaGiay.forEach(m => list.push({ ...m, filterType: 'mua', sortDate: new Date(m.thoiGian) })); }
+            if (currentHistFilter === 'tat-ca' || currentHistFilter === 'giat') { dataStore.giatGiay.forEach(g => list.push({ ...g, filterType: 'giat', sortDate: new Date(g.thoiGian) })); }
             list.sort((a, b) => b.sortDate - a.sortDate);
-            
-            if (list.length === 0) { 
-                listContainer.innerHTML = `<div class="text-center py-12 text-sm text-slate-400">Chưa có dữ liệu.</div>`; 
-                return; 
-            }
+            if (list.length === 0) { listContainer.innerHTML = `<div class="text-center py-12 text-sm text-slate-400">Chưa có dữ liệu.</div>`; return; }
 
             list.forEach(item => {
-                const row = document.createElement('div'); 
-                const imgUrl = item.filterType === 'mua' ? item.urlAnhGiay : item.urlAnhGiayGiat;
+                const row = document.createElement('div'); const imgUrl = item.filterType === 'mua' ? item.urlAnhGiay : item.urlAnhGiayGiat;
                 row.className = "bg-white border border-slate-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition";
                 
                 let phoneHtml = '';
@@ -661,66 +679,25 @@
                 }
 
                 if (imgUrl) {
-                    row.innerHTML = `
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <span class="px-2 py-0.5 ${item.filterType==='mua'?'bg-indigo-50 text-indigo-700':'bg-cyan-50 text-cyan-700'} font-extrabold text-[9px] rounded-md uppercase">${item.filterType==='mua'?'Mua giày':'Dịch vụ giặt'}</span>
-                            <div class="text-lg font-black ${item.filterType==='mua'?'text-indigo-600':'text-cyan-600'} pt-1">${item.filterType==='mua'?formatMoney(item.gia):''}</div>
-                            <div class="text-[10px] text-slate-500 font-medium mt-1">${formatDate(item.thoiGian)}</div>
-                            <h4 class="text-xs font-bold text-slate-900 mt-1.5 leading-tight">Khách: ${item.filterType==='mua'?item.ten:item.tenKhachHang}</h4>
-                            ${phoneHtml}
-                        </div>
-                        <div class="relative aspect-[4/3] rounded-xl overflow-hidden border border-slate-200 cursor-pointer shadow-sm group" onclick="openImageZoom('${imgUrl}')">
-                            <img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        </div>
-                    </div>`;
+                    row.innerHTML = `<div class="grid grid-cols-2 gap-4"><div><span class="px-2 py-0.5 ${item.filterType==='mua'?'bg-indigo-50 text-indigo-700':'bg-cyan-50 text-cyan-700'} font-extrabold text-[9px] rounded-md uppercase">${item.filterType==='mua'?'Mua giày':'Dịch vụ giặt'}</span><div class="text-lg font-black ${item.filterType==='mua'?'text-indigo-600':'text-cyan-600'} pt-1">${item.filterType==='mua'?formatMoney(item.gia):''}</div><div class="text-[10px] text-slate-500 font-medium mt-1">${formatDate(item.thoiGian)}</div><h4 class="text-xs font-bold text-slate-900 mt-1.5 leading-tight">Khách: ${item.filterType==='mua'?item.ten:item.tenKhachHang}</h4>${phoneHtml}</div><div class="relative aspect-[4/3] rounded-xl overflow-hidden border border-slate-200 cursor-pointer shadow-sm group" onclick="openImageZoom('${imgUrl}')"><img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div></div>`;
                 } else {
-                    row.innerHTML = `
-                    <div>
-                        <span class="px-2 py-0.5 ${item.filterType==='mua'?'bg-indigo-50 text-indigo-700':'bg-cyan-50 text-cyan-700'} font-extrabold text-[9px] rounded-md uppercase">${item.filterType==='mua'?'Mua giày':'Dịch vụ giặt'}</span>
-                        <div class="text-lg font-black text-slate-900 mt-1">${item.filterType==='mua'?formatMoney(item.gia):''}</div>
-                        <div class="text-[10px] text-slate-500 font-medium mt-1">${formatDate(item.thoiGian)}</div>
-                        <h4 class="text-xs font-bold text-slate-900 mt-1.5 leading-tight">Khách: ${item.filterType==='mua'?item.ten:item.tenKhachHang}</h4>
-                        ${phoneHtml}
-                    </div>`;
+                    row.innerHTML = `<div><span class="px-2 py-0.5 ${item.filterType==='mua'?'bg-indigo-50 text-indigo-700':'bg-cyan-50 text-cyan-700'} font-extrabold text-[9px] rounded-md uppercase">${item.filterType==='mua'?'Mua giày':'Dịch vụ giặt'}</span><div class="text-lg font-black text-slate-900 mt-1">${item.filterType==='mua'?formatMoney(item.gia):''}</div><div class="text-[10px] text-slate-500 font-medium mt-1">${formatDate(item.thoiGian)}</div><h4 class="text-xs font-bold text-slate-900 mt-1.5 leading-tight">Khách: ${item.filterType==='mua'?item.ten:item.tenKhachHang}</h4>${phoneHtml}</div>`;
                 }
                 listContainer.appendChild(row);
             });
             lucide.createIcons();
         }
 
-        // TRA CỨU
-        function toggleClearSearchBtn() { 
-            const si = document.getElementById('input-search'); 
-            const cb = document.getElementById('btn-clear-search'); 
-            if (si.value.trim().length > 0) cb.classList.remove('hidden'); else cb.classList.add('hidden'); 
-        }
-        
-        function clearSearch() { 
-            document.getElementById('input-search').value = ""; 
-            toggleClearSearchBtn(); 
-            executeSearch(); 
-            document.getElementById('input-search').focus(); 
-        }
+        function toggleClearSearchBtn() { const si = document.getElementById('input-search'); const cb = document.getElementById('btn-clear-search'); if (si.value.trim().length > 0) cb.classList.remove('hidden'); else cb.classList.add('hidden'); }
+        function clearSearch() { document.getElementById('input-search').value = ""; toggleClearSearchBtn(); executeSearch(); document.getElementById('input-search').focus(); }
         
         function executeSearch() {
-            const q = document.getElementById('input-search').value.trim().toLowerCase(); 
-            const res = document.getElementById('search-results'); 
-            res.innerHTML = "";
-            
-            if (!q) { 
-                res.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">Gõ SĐT hoặc từ khóa để tra cứu hồ sơ</div>`; 
-                return; 
-            }
-            
+            const q = document.getElementById('input-search').value.trim().toLowerCase(); const res = document.getElementById('search-results'); res.innerHTML = "";
+            if (!q) { res.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">Gõ SĐT hoặc từ khóa để tra cứu hồ sơ</div>`; return; }
             let sdtSet = new Set();
             dataStore.muaGiay.forEach(m => { if (m.sdt.includes(q) || m.ten.toLowerCase().includes(q) || m.tenGiay.toLowerCase().includes(q)) sdtSet.add(m.sdt); });
             dataStore.giatGiay.forEach(g => { if (g.sdt.includes(q) || g.tenKhachHang.toLowerCase().includes(q)) sdtSet.add(g.sdt); });
-            
-            if (sdtSet.size === 0) { 
-                res.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">Không tìm thấy kết quả</div>`; 
-                return; 
-            }
+            if (sdtSet.size === 0) { res.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">Không tìm thấy kết quả</div>`; return; }
 
             sdtSet.forEach(sdt => {
                 let cm = dataStore.muaGiay.filter(m => m.sdt === sdt).map(m => ({ type: 'Mua', ...m, dateObj: new Date(m.thoiGian) }));
@@ -729,40 +706,40 @@
                 let all = [...cm, ...cg].sort((a, b) => b.dateObj - a.dateObj);
                 
                 res.innerHTML += `
-                <div class="bg-white border border-slate-100 rounded-2xl p-4 mb-3 shadow-sm hover:shadow-md transition">
+                <div class="bg-white border border-slate-100 rounded-2xl p-4 mb-3 shadow-sm">
                     <div class="flex items-center justify-between mb-3 pb-3 border-b border-slate-100">
                         <h3 class="text-sm font-black text-slate-900 truncate pr-2">${name}</h3>
                         <div class="flex items-center space-x-1.5 shrink-0">
-                            <span class="text-[10px] font-bold text-slate-800 bg-slate-100 px-2 py-1.5 rounded-md border border-slate-200">${sdt}</span>
-                            <button onclick="copySdt(event, '${sdt}')" class="p-1.5 bg-cyan-50 hover:bg-cyan-100 text-cyan-600 rounded-md transition" title="Copy SĐT"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
-                            <a href="tel:${sdt}" class="p-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 rounded-md transition" title="Gọi SĐT"><i data-lucide="phone-call" class="w-3.5 h-3.5"></i></a>
+                            <span class="text-xs font-bold text-slate-800 bg-slate-100 px-2 py-1 rounded-md border border-slate-200">${sdt}</span>
+                            <button onclick="copySdt(event, '${sdt}')" class="p-1 bg-cyan-50 hover:bg-cyan-100 text-cyan-600 rounded-md transition" title="Copy SĐT"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                            <a href="tel:${sdt}" class="p-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 rounded-md transition" title="Gọi SĐT"><i data-lucide="phone-call" class="w-3.5 h-3.5"></i></a>
                         </div>
                     </div>
                     <div class="space-y-3">
                         ${all.map(t => {
                             let imgUrl = t.type === 'Mua' ? t.urlAnhGiay : t.urlAnhGiayGiat;
-                            let imgHtml = imgUrl ? `<div class="relative aspect-[4/3] w-28 shrink-0 rounded-xl overflow-hidden border border-slate-200 cursor-pointer shadow-sm" onclick="openImageZoom('${imgUrl}')"><img src="${imgUrl}" class="w-full h-full object-cover hover:scale-105 transition duration-500"></div>` : '';
+                            let imgHtml = imgUrl ? `<div class="relative aspect-[4/3] w-28 shrink-0 rounded-xl overflow-hidden border border-slate-200 cursor-pointer" onclick="openImageZoom('${imgUrl}')"><img src="${imgUrl}" class="w-full h-full object-cover hover:scale-105 transition"></div>` : '';
                             
                             if(t.type === 'Mua') {
                                 return `
-                                <div class="flex items-stretch gap-3 bg-slate-50 p-2.5 border border-slate-100 rounded-xl">
+                                <div class="flex items-stretch gap-3 bg-slate-50 p-2 border border-slate-200 rounded-xl">
                                     ${imgHtml}
                                     <div class="flex-1 flex flex-col justify-center py-1 overflow-hidden">
                                         <div><span class="text-indigo-600 font-extrabold bg-indigo-100 px-1.5 py-0.5 rounded-md text-[9px] uppercase tracking-wider">Mua giày</span></div>
                                         <div class="mt-1 font-bold text-slate-800 text-sm leading-tight truncate">${t.tenGiay}</div>
                                         <div class="font-black text-indigo-600 text-base mt-0.5">${formatMoney(t.gia)}</div>
-                                        <div class="text-[10px] text-slate-400 font-medium mt-1">${formatDate(t.thoiGian)}</div>
+                                        <div class="text-[10px] text-slate-400 mt-1">${formatDate(t.thoiGian)}</div>
                                     </div>
                                 </div>`;
                             } else {
                                 return `
-                                <div class="flex items-stretch gap-3 bg-slate-50 p-2.5 border border-slate-100 rounded-xl">
+                                <div class="flex items-stretch gap-3 bg-slate-50 p-2 border border-slate-200 rounded-xl">
                                     ${imgHtml}
                                     <div class="flex-1 flex flex-col justify-center py-1 overflow-hidden">
                                         <div><span class="text-cyan-600 font-extrabold bg-cyan-100 px-1.5 py-0.5 rounded-md text-[9px] uppercase tracking-wider">Giặt giày</span></div>
                                         <div class="mt-1 font-bold text-slate-800 text-sm leading-tight truncate">${t.dichVu || "Dịch vụ giặt"}</div>
-                                        <div class="text-[10px] font-bold text-slate-600 mt-1 bg-white px-2 py-1 rounded-md border border-slate-200 inline-block self-start">TT: ${t.trangThaiThanhToan}</div>
-                                        <div class="text-[10px] text-slate-400 font-medium mt-1">${formatDate(t.thoiGian)}</div>
+                                        <div class="text-xs font-bold text-slate-600 mt-0.5">TT: ${t.trangThaiThanhToan}</div>
+                                        <div class="text-[10px] text-slate-400 mt-1">${formatDate(t.thoiGian)}</div>
                                     </div>
                                 </div>`;
                             }
@@ -788,14 +765,9 @@
             if (tabId === 'lich-su') renderHistoryList();
         }
 
-        // UTILITIES
-        function formatMoney(amount) {
-            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
-        }
-
+        function formatMoney(amount) { return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount); }
         function formatDate(isoString) {
-            if (!isoString) return "";
-            const d = new Date(isoString);
+            if (!isoString) return ""; const d = new Date(isoString);
             return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')} - ${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`;
         }
 
@@ -803,43 +775,23 @@
             const target = document.getElementById(targetId);
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    target.style.backgroundImage = `url(${e.target.result})`;
-                    target.classList.remove('hidden');
-                }
+                reader.onload = function(e) { target.style.backgroundImage = `url(${e.target.result})`; target.classList.remove('hidden'); }
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        function openImageZoom(src) {
-            document.getElementById('lightbox-image').src = src;
-            document.getElementById('lightbox-modal').classList.remove('hidden');
-            document.getElementById('lightbox-modal').classList.add('flex');
-        }
-
-        function closeImageZoom() {
-            document.getElementById('lightbox-image').src = "";
-            document.getElementById('lightbox-modal').classList.add('hidden');
-            document.getElementById('lightbox-modal').classList.remove('flex');
-        }
+        function openImageZoom(src) { document.getElementById('lightbox-image').src = src; document.getElementById('lightbox-modal').classList.remove('hidden'); document.getElementById('lightbox-modal').classList.add('flex'); }
+        function closeImageZoom() { document.getElementById('lightbox-image').src = ""; document.getElementById('lightbox-modal').classList.add('hidden'); document.getElementById('lightbox-modal').classList.remove('flex'); }
 
         function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
+            const container = document.getElementById('toast-container'); const toast = document.createElement('div');
             let bg = type === 'danger' ? 'bg-red-500 shadow-red-200' : (type === 'warning' ? 'bg-amber-500 shadow-amber-200' : 'bg-emerald-500 shadow-emerald-200');
             let icon = type === 'danger' ? 'alert-circle' : (type === 'warning' ? 'info' : 'check-circle-2');
-            
             toast.className = `${bg} text-white flex items-center space-x-2 px-4 py-3 rounded-xl shadow-lg text-xs font-semibold transform translate-y-2 opacity-0 transition duration-300 pointer-events-auto`;
             toast.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 shrink-0"></i><span>${message}</span>`;
-            
-            container.appendChild(toast);
-            lucide.createIcons();
-
+            container.appendChild(toast); lucide.createIcons();
             setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 50);
-            setTimeout(() => {
-                toast.classList.add('translate-y-2', 'opacity-0');
-                setTimeout(() => { toast.remove(); }, 300);
-            }, 2500); 
+            setTimeout(() => { toast.classList.add('translate-y-2', 'opacity-0'); setTimeout(() => { toast.remove(); }, 300); }, 2500); 
         }
     </script>
 </body>
