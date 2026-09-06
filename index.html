@@ -94,7 +94,7 @@
             
             <div class="relative">
                 <i data-lucide="search" class="w-5 h-5 absolute left-3 top-3 text-slate-400"></i>
-                <input type="text" id="input-search" oninput="toggleClearSearchBtn()" onkeyup="if(event.key==='Enter') executeSearch()" placeholder="Nhập Số điện thoại hoặc Tên khách..." class="w-full pl-10 pr-10 py-3 bg-white border border-slate-200 rounded-xl text-sm font-semibold shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
+                <input type="text" id="input-search" oninput="toggleClearSearchBtn()" onkeyup="if(event.key==='Enter') executeSearch()" placeholder="Nhập SĐT hoặc Tên khách..." class="w-full pl-10 pr-10 py-3 bg-white border border-slate-200 rounded-xl text-sm font-semibold shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
                 <button id="btn-clear-search" onclick="clearSearch()" class="absolute right-3 top-3 text-slate-400 hover:text-slate-600 hidden">
                     <i data-lucide="x-circle" class="w-5 h-5"></i>
                 </button>
@@ -142,9 +142,9 @@
                         </label>
                         
                         <div id="shoe-container" class="space-y-2.5">
-                            <div class="flex space-x-2 shoe-row">
-                                <input type="text" value="Giày Sneaker" required class="shoe-name flex-1 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
-                                <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this); calculateTotal()" onkeyup="calculateTotal()" class="shoe-price flex-1 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-black text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-right">
+                            <div class="flex space-x-2 shoe-row w-full">
+                                <input type="text" value="Giày Sneaker" required class="shoe-name flex-1 min-w-0 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                                <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this); calculateTotal()" onkeyup="calculateTotal()" class="shoe-price flex-1 min-w-0 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-black text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-right">
                             </div>
                         </div>
 
@@ -358,11 +358,12 @@
             shoeCounter++;
             const container = document.getElementById('shoe-container');
             const row = document.createElement('div');
-            row.className = "flex space-x-2 shoe-row mt-2.5 items-center animate-in fade-in";
+            row.className = "flex space-x-2 shoe-row w-full mt-2.5 items-center animate-in fade-in";
+            // CHÚ Ý: min-w-0 flex-1 ở đây giúp chia đôi 50-50 hoàn hảo
             row.innerHTML = `
-                <input type="text" value="Giày Sneaker ${shoeCounter}" required class="shoe-name flex-1 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
-                <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this); calculateTotal()" onkeyup="calculateTotal()" class="shoe-price flex-1 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-black text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-right">
-                <button type="button" onclick="this.parentElement.remove(); calculateTotal();" class="p-2.5 text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                <input type="text" value="Giày Sneaker ${shoeCounter}" required class="shoe-name flex-1 min-w-0 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this); calculateTotal()" onkeyup="calculateTotal()" class="shoe-price flex-1 min-w-0 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-black text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-right">
+                <button type="button" onclick="this.parentElement.remove(); calculateTotal();" class="p-2.5 text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition shrink-0"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
             `;
             container.appendChild(row);
             lucide.createIcons();
@@ -391,7 +392,7 @@
             let total = 0;
             document.querySelectorAll('.shoe-price').forEach(inp => {
                 let v = parseInt(inp.value) || 0;
-                if(v > 0 && v < 10000) v *= 1000; // Tạm tính ngầm cho phần hiển thị
+                if(v > 0 && v < 10000) v *= 1000; 
                 total += v;
             });
             const display = document.getElementById('total-price-display');
@@ -558,9 +559,9 @@
                 shoeCounter = 1;
                 const container = document.getElementById('shoe-container');
                 container.innerHTML = `
-                    <div class="flex space-x-2 shoe-row">
-                        <input type="text" value="Giày Sneaker" required class="shoe-name flex-1 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
-                        <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this); calculateTotal()" onkeyup="calculateTotal()" class="shoe-price flex-1 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-black text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-right">
+                    <div class="flex space-x-2 shoe-row w-full">
+                        <input type="text" value="Giày Sneaker" required class="shoe-name flex-1 min-w-0 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                        <input type="number" placeholder="Giá..." required onblur="handlePriceBlur(this); calculateTotal()" onkeyup="calculateTotal()" class="shoe-price flex-1 min-w-0 px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-black text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition text-right">
                     </div>`;
                 
                 document.getElementById('total-price-display').classList.add('hidden');
